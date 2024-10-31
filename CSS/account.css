@@ -1,4 +1,4 @@
-/* CSS for Services Page */
+/* CSS for Account Page */
 
 /* Reset */
 * {
@@ -92,105 +92,91 @@ body {
     color: var(--light-green);
 }
 
-/* Services Section */
-.services {
+/* Account Section */
+.account-section {
     text-align: center;
     padding: 2rem 0;
     background-color: var(--light-blue);
-}
-
-.services h1 {
-    color: var(--dark-blue);
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.services p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-}
-
-.service-cards {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 0 2rem;
-}
-
-.service-card {
-    background-color: var(--light-green);
-    border: 1px solid var(--medium-blue);
+    margin: 1rem auto;
+    width: 90%;
+    max-width: 600px;
     border-radius: 10px;
-    padding: 1rem;
-    width: 250px;
-    text-align: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.service-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-}
-
-.service-card h2 {
-    color: var(--dark-blue);
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-}
-
-.service-card p {
-    font-size: 1rem;
+.account-section h2.account-title {
+    font-size: 1.8rem;
     color: var(--dark-blue);
     margin-bottom: 1rem;
 }
 
-.service-card .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: var(--medium-blue);
-    color: var(--light-green);
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+.account-section h1 {
+    font-size: 1.5rem;
+    color: var(--dark-blue);
+    margin-bottom: 1rem;
 }
 
-.service-card .btn:hover {
-    background-color: var(--dark-blue);
-}
-
-/* CTA Section */
-.cta {
-    text-align: center;
-    padding: 2rem 1rem;
-    background-color: var(--medium-blue);
-    color: var(--light-green);
-}
-
-.cta h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.cta p {
-    font-size: 1.2rem;
+.account-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     margin-bottom: 1.5rem;
 }
 
-.cta .btn {
-    padding: 0.7rem 1.5rem;
-    background-color: var(--dark-blue);
-    color: var(--light-green);
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
+.account-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: var(--light-green);
+    border: 1px solid var(--medium-blue);
+    border-radius: 8px;
+    cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.cta .btn:hover {
-    background-color: var(--light-blue);
+.account-option:hover {
+    background-color: var(--medium-blue);
+    color: var(--light-green);
+}
+
+.icon {
+    font-size: 1.5rem;
     color: var(--dark-blue);
+}
+
+.option-text h3 {
+    font-size: 1.2rem;
+    color: var(--dark-blue);
+    margin-bottom: 0.3rem;
+}
+
+.option-text p {
+    font-size: 0.9rem;
+    color: var(--dark-blue);
+}
+
+.arrow {
+    font-size: 1.2rem;
+    color: var(--dark-blue);
+}
+
+/* Logout Button */
+.logout-button {
+    padding: 0.8rem 2rem;
+    background-color: var(--medium-blue);
+    color: var(--light-green);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background-color: var(--dark-blue);
 }
 
 /* Footer */
