@@ -1,3 +1,12 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Colors */
 :root {
     --light-green: #DFF2EB;
     --light-blue: #B9E5E8;
@@ -5,13 +14,14 @@
     --dark-blue: #4A628A;
 }
 
+/* Body Styling */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    background-color: var(--light-green);
     color: var(--dark-blue);
+    line-height: 1.6;
 }
 
+/* Navigation */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -80,4 +90,59 @@ body {
 
 .btn:hover {
     color: var(--light-green);
+}
+
+/* Container */
+.container {
+    padding: 2rem;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 2rem;
+}
+
+form input {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid var(--dark-blue);
+    border-radius: 5px;
+}
+
+/* Button for forms */
+form button {
+    padding: 0.5rem 1rem;
+    background-color: var(--medium-blue);
+    color: var(--light-green);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: var(--dark-blue);
+}
+
+/* Lists and Tables */
+ul {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+table, th, td {
+    border: 1px solid var(--dark-blue);
+}
+
+th, td {
+    padding: 0.5rem;
+    text-align: left;
 }
