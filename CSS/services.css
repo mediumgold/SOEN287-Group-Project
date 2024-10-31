@@ -8,6 +8,7 @@
     font-family: Arial, sans-serif;
 }
 
+/* Colors */
 :root {
     --light-green: #DFF2EB;
     --light-blue: #B9E5E8;
@@ -15,80 +16,52 @@
     --dark-blue: #4A628A;
 }
 
+/* Body Styling */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    background-color: var(--light-green);
     color: var(--dark-blue);
+    line-height: 1.6;
 }
 
-.navbar {
+/* Navigation */
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem 2rem;
     background-color: var(--medium-blue);
-    padding: 10px 20px;
 }
 
-.company-nav-logo {
+nav .company-nav-logo {
     display: flex;
-    flex-direction: column;
-    align-items: center; 
+    align-items: center;
 }
 
-.company-nav-logo img {
-    height: 50px; 
-    margin-bottom: 10px;
-    width: 100%;
-    padding:0%;
-    border-radius: 50%;
-    transition: none; /*Removes highlight over image*/
+nav img {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5rem;
 }
 
-.company-nav-logo #title {
-    margin: 0;
-    text-align: center;
+nav h2#title {
+    color: var(--dark-blue);
+    font-size: 1.5rem;
 }
 
-.nav-links {
+nav .nav-links {
     display: flex;
-    justify-content: space-between; 
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+    list-style: none;
 }
 
-.nav-links .link {
-    margin-right: 20px;
-}
-
-.navbar a {
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none; 
-    font-size: 17px;
+.nav-links li a {
+    color: var(--dark-blue);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
     font-weight: bold;
     transition: color 0.3s;
-    color: var(--dark-blue);
 }
 
-.nav-links a:hover{
-    color: var(--light-green);
-}
-
-.btn {
-    background-color: var(--medium-blue);
-    color: var(--dark-blue);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px; 
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 17px;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
+.nav-links li a:hover {
     color: var(--light-green);
 }
 
