@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //current userID
     const userId = localStorage.getItem('userId');
 
-    
+    //test comment
     if (isLoggedIn) {
         //once logged in, we will change the contents and href of btn 1 (sign in) to lead to account
         btn1.querySelector('a').innerText = 'Account';
