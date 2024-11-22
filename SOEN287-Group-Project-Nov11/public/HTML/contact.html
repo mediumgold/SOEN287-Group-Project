@@ -1,80 +1,126 @@
 <!DOCTYPE html>
-<html lang="en"></html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../CSS/contact.css" />
-  <title>COMPANY NAME CONTACT</title>
-  <script></script>
-</head>
-
-<body>
-  <nav class="navbar">
-    <div class="company-nav-logo">
-        <a href="index.html"><img src="../assets/company logo placeholder for a website.png"/></a>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/contact.css" />
+    <title>COMPANY NAME CONTACT</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="company-nav-logo">
+        <a href="index.html"
+          ><img src="../assets/company-logo-placeholder.png" alt="Company Logo"
+        /></a>
         <h2 id="title">Company Name</h2>
-    </div>
-
-    <ul class="nav-links">
+      </div>
+      <ul class="nav-links">
         <li class="link"><a href="index.html">Home</a></li>
         <li class="link"><a href="services.html">Services</a></li>
-        <!-- <li class="link"><a href="pricing.html">Pricing</a></li> -->
         <li class="link"><a href="about.html">About</a></li>
         <li class="link"><a href="contact.html">Contact</a></li>
-        <!-- <li class="link"><a href="account.html">Account</a></li> -->
         <li class="link"><a href="cart.html">Cart</a></li>
-    </ul>
+      </ul>
+      <div id="signInDiv">
+        <button id="signIn" class="btn">
+          <a href="login.html">Sign In</a>
+        </button>
+        <button id="createAcc" class="btn">
+          <a href="signup.html">Create Account</a>
+        </button>
+      </div>
+    </nav>
 
-    <div id="signInDiv">
-      <button id="signIn" class="btn"><a href="login.html">Sign In</a></button>
-      <button id="createAcc" class="btn"><a href="signup.html">Create Account</a></button>
-  </div>
+    <header>
+      <h1>Contact</h1>
+    </header>
 
-</nav>
-
-  <header>
-    <h1>Contact</h1>
-  </header>
-
-  <main>
-    <section class="contact">
+    <main>
+      <section class="contact">
         <h2>Get in Touch</h2>
-        <p>Have questions? Send us an email and let us know. We'll be glad to help!</p>
-        <form action="mailto:your-email@example.com" method="POST" enctype="text/plain">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+        <p>
+          Have questions? Send us an email and let us know. We'll be glad to
+          help!
+        </p>
+        <form
+          action="mailto:your-email@example.com"
+          method="POST"
+          enctype="text/plain"
+        >
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
 
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
 
-            <button type="submit">Send Message</button>
+          <button type="submit">Send Message</button>
         </form>
 
         <h2>Call us</h2>
         <p>Call us at 1-800-Company</p>
 
         <h2>Media</h2>
-        <p>random media for now</p>
-        <p>Instagram</p>
-        <p>Facebook</p>
-        <p>YouTube</p>
-        <p>Reddit</p>
+        <div class="logo-list">
+          <div class="logo-item">
+            <a
+              href="https://www.instagram.com/instagram_account"
+              class="logo-link"
+            >
+              <div class="instagram-icon">
+                <img src="../assets/Instagram-Icon.png" alt="Instagram Logo" />
+              </div>
+              <span>@instagram_account</span>
+            </a>
+          </div>
+          <div class="logo-item">
+            <a
+              href="https://www.facebook.com/facebook_account"
+              class="logo-link"
+            >
+              <div class="facebook-icon">
+                <img src="../assets/facebook-icon.webp" alt="Facebook Logo" />
+              </div>
+              <span>@facebook_account</span>
+            </a>
+          </div>
+          <div class="logo-item">
+            <a
+              href="https://www.youtube.com/@youtube_account"
+              class="logo-link"
+            >
+              <div class="youtube-icon">
+                <img src="../assets/youtube-icon.webp" alt="Youtube Logo" />
+              </div>
+              <span>@youtube_account</span>
+            </a>
+          </div>
+          <div class="logo-item">
+            <a href="https://www.reddit.com/reddit_account" class="logo-link">
+              <div class="reddit-icon">
+                <img src="../assets/reddit-icon.png" alt="Reddit Logo" />
+              </div>
+              <span>@reddit_account</span>
+            </a>
+          </div>
+        </div>
 
         <h2>Looking for work?</h2>
-        <p>Send us your resume!</p>
-        <p>randomemail@companyname.com</p>
-    </section>
-  </main>
+        <p>
+          Send us your resume! <br />
+          Email: randomemail@companyname.com
+        </p>
+      </section>
+    </main>
 
-  <div class="footer-bar">
-    <p>&copy; 2024 Company Name. All rights reserved.</p>
-    <ul class="footer-links">
+    <div class="footer-bar">
+      <p>&copy; 2024 Company Name. All rights reserved.</p>
+      <ul class="footer-links">
         <li><a href="privacy.html">Privacy Policy</a></li>
         <li><a href="terms.html">Terms of Service</a></li>
-    </ul>
-  </div>
-
-</body>
+      </ul>
+    </div>
+  </body>
+</html>
