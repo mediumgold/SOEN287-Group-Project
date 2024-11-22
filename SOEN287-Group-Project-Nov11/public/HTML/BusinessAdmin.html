@@ -9,29 +9,24 @@
 <body>
     <nav class="navbar">
         <div class="company-nav-logo">
-            <a href="index.html"><img src="../assets/company logo placeholder for a website.png"/></a>
+            <a href="index.html"><img src="../assets/company logo placeholder for a website.png" alt="Company Logo"/></a>
             <h2 id="title">Company Name</h2>
         </div>
 
         <ul class="nav-links">
             <li class="link"><a href="index.html">Home</a></li>
             <li class="link"><a href="services.html">Services</a></li>
-            <!-- <li class="link"><a href="pricing.html">Pricing</a></li> -->
             <li class="link"><a href="about.html">About</a></li>
             <li class="link"><a href="contact.html">Contact</a></li>
-            <!-- <li class="link"><a href="account.html">Account</a></li> -->
+            <li class="link"><a href="account.html">Account</a></li>
             <li class="link"><a href="cart.html">Cart</a></li>
         </ul>
 
-        <!-- <div id="signInDiv">
-            <button id="signIn" class="btn"><a href="login.html">Sign In</a></button>
-            <button id="createAcc" class="btn"><a href="signup.html">Create Account</a></button>
-        </div> -->
-
+        <!-- Add logout button -->
         <button id="logout-button" class="btn" onclick="window.location.href='Account.html'">Logout</button>
         <button id="logout-in" class="btn" onclick="window.location.href='Login.html'">Login</button>
-
     </nav>
+
     <div class="container">
         <h2>Edit Business Information</h2>
         <p>Business Name: <span id="business-name">Your Business Name</span></p>
@@ -67,7 +62,7 @@
 
         <h3>Unpaid Customers List</h3>
         <ul id="unpaid-customers-list"></ul>
-        
+
         <h2>Service Overview</h2>
         <table>
             <thead>
@@ -85,6 +80,18 @@
             </tbody>
         </table>
     </div>
-    <script src="BusinessAdmin.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAdmin = localStorage.getItem('isAdmin');
+
+            if (!isAdmin || isAdmin !== 'true') {
+                alert('Access denied. Admins only.');
+                window.location.href = 'login.html';  // Redirect to login page if not admin
+            }
+
+        });
+    </script>
+    <script src="../JS/BusinessAdmin.js"></script>
 </body>
 </html>

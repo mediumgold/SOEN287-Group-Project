@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
-   // const adminLoginForm = 
+    const adminLoginForm = document.getElementById('admin-login-form');
 
     if (loginForm) {
-        //user form login
         loginForm.addEventListener('submit', function(event) {
             event.preventDefault();
         
@@ -15,23 +14,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password }) // Send email and password
+                body: JSON.stringify({ email, password })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Store login status and user ID in localStorage
                     localStorage.setItem('loggedIn', true);
                     localStorage.setItem('userId', data.userId);
-                    
-                    // Redirect to the home page
+                    localStorage.setItem('isAdmin', data.isAdmin || false); // Store if the user is an admin
                     window.location.href = data.redirectTo;
-
-                    //message saying they logged in
-                    alert("You logged in!");
                 } else {
-                    // Show error message if login fails
                     alert(data.message || 'Login failed. Please check your credentials.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+
+
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+        
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+        
+            fetch('http://localhost:5500/admin-login', {  
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('loggedIn', true);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('isAdmin', true);  // Set isAdmin to true for admin login
+                    window.location.href = 'businessAdmin.html';  // Redirect to BusinessAdmin page
+                } else {
+                    alert(data.message || 'Admin login failed.');
                 }
             })
             .catch(error => console.error('Error:', error));
