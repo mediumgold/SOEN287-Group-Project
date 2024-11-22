@@ -1,118 +1,229 @@
-
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const fs = require('fs'); // Import fs module 
-const path = require('path'); // Import path module
+const fs = require('fs');
+const path = require('path');
 const cors = require('cors');
-
+const util = require('util');
 
 const app = express();
 const port = 5500;
 
-// app.use(cors({
-//     origin: 'http://localhost:5500'
-// }));
-
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-
+// Database connection
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    //database: 'userDB'
+    database: 'userDB',
 });
 
-/*
-    When the db connects, it'll run the code in the userDB.sql file. Which will create/open the userDB
-*/
-db.connect((err) => {
-    if (err) 
-        throw err;
+db.query = util.promisify(db.query); // Promisify db.query for async/await
+
+const initDB = async () => {
+    try {
+        const sqlFilePath = path.join(__dirname, 'userDB.sql');
+        const sql = fs.readFileSync(sqlFilePath, 'utf8');
+        const sqlCommands = sql.split(';').filter(cmd => cmd.trim() !== '');
+        for (const command of sqlCommands) {
+            await db.query(command);
+        }
+        console.log('Database initialized');
+    } catch (error) {
+        console.error('Error initializing database:', error);
+    }
+};
+
+db.connect(async (err) => {
+    if (err) throw err;
     console.log('Connected to database');
 
-    // Read and execute SQL file 
-    const sqlFilePath = path.join(__dirname, 'userDB.sql'); 
-    
-    fs.readFile(sqlFilePath, 'utf8', (err, sql) => { 
-        if (err) 
-            throw err; 
-    
-        // Split SQL commands to execute them sequentially 
-        const sqlCommands = sql.split(';').filter(cmd => cmd.trim() !== ''); 
-    
-        sqlCommands.forEach(command => { 
-            db.query(command, (err, result) => { 
-                if (err) 
-                    throw err; 
-            }); 
-        }); 
-    
-        console.log('SQL file executed successfully'); 
-
-        db.query('USE userDB', (err) => {
-            if (err) 
-                throw err;
-            console.log('Database selected');
-        });
-
-    });
-    
-
-});
-
-
-//Submitting to the database
-app.post('/submit', (req, res) => {
-    
-    const { name, email, password } = req.body
-    const sql = `INSERT INTO userLogin (name, email, password) VALUES ('${name}', '${email}', '${password}')`;
-
-    db.query(sql, (err, result) => { 
-        if (err) { 
-            console.error('Error executing query:', err); 
-            return res.status(500).json({ success: false, message: 'Database error' }); 
-        } 
-        //res.json({ 
-        //     success: true, 
-        //     data: { name, email, password } 
-        // }); 
-
-        //success message and redirect to home index.html and save the current id of the user to userId
-        res.json({ success: true, userId: result.insertId, message: 'Account created successfully', redirectTo: 'index.html' });
-    });
-});
-
-//Reading from the database
-app.post('/login', (req, res) => {
-    //Get email and password from the request
-    const { email, password } = req.body; 
-
-    //Check if there's an email and password that exists.
-    const sql = `SELECT id FROM userLogin WHERE email = ? AND password = ?`;
-
-    db.query(sql, [email, password], (err, results) => {
-        if (err) {
-            console.error('Error executing query:', err);
-            return res.status(500).json({ success: false, message: 'Database error' });
+    try {
+        // Initialize the database using the SQL file
+        const sqlFilePath = path.join(__dirname, 'userDB.sql');
+        const sql = fs.readFileSync(sqlFilePath, 'utf8');
+        const sqlCommands = sql.split(';').filter(cmd => cmd.trim() !== '');
+        for (const command of sqlCommands) {
+            await db.query(command);
         }
+        console.log('Database initialized');
+
+        // Explicitly select the userDB database
+        await db.query('USE userDB');
+        console.log('Database switched to userDB');
+    } catch (error) {
+        console.error('Error during database initialization:', error);
+        process.exit(1); // Exit if initialization fails
+    }
+});
+
+// Routes
+
+// User registration
+app.post('/submit', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const sql = 'INSERT INTO userLogin (name, email, password) VALUES (?, ?, ?)';
+        const result = await db.query(sql, [name, email, password]);
+        res.json({
+            success: true,
+            userId: result.insertId,
+            message: 'Account created successfully',
+            redirectTo: 'index.html',
+        });
+    } catch (error) {
+        console.error('Error submitting data:', error);
+        res.status(500).json({ message: 'Database error' });
+    }
+});
+
+// User login
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const sql = 'SELECT user_id FROM userLogin WHERE email = ? AND password = ?';
+        const results = await db.query(sql, [email, password]);
 
         if (results.length > 0) {
-            //If user is found, login is successful, record the id
-            const userId = results[0].id;
-            res.json({ success: true, userId: userId, redirectTo: 'index.html' });
-
+            res.json({
+                success: true,
+                userId: results[0].user_id,
+                redirectTo: 'index.html',
+            });
         } else {
-            //No user found, login fails
             res.json({ success: false, message: 'Invalid email or password' });
         }
-    });
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).json({ message: 'Database error' });
+    }
+});
+
+// Add item to cart
+app.post('/cart', async (req, res) => {
+    const { userId, itemId, quantity } = req.body;
+
+    if (!userId || !itemId || !quantity) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    try {
+        const sql = 'INSERT INTO Cart (user_id, item_id, quantity) VALUES (?, ?, ?)';
+        await db.query(sql, [userId, itemId, quantity]);
+        res.status(201).json({ message: 'Item added to cart' });
+    } catch (err) {
+        console.error('Error adding item to cart:', err);
+        res.status(500).json({ message: 'Failed to add item to cart' });
+    }
+});
+
+// View user's cart
+app.get('/cart/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const sql = `
+            SELECT Cart.*, Items.name, Items.price 
+            FROM Cart 
+            JOIN Items ON Cart.item_id = Items.item_id 
+            WHERE Cart.user_id = ?
+        `;
+        const results = await db.query(sql, [userId]);
+        res.json(results);
+    } catch (error) {
+        console.error('Error retrieving cart:', error);
+        res.status(500).json({ message: 'Database error' });
+    }
+});
+
+// Remove item from cart by cart_id
+app.delete('/cart/:cartId', async (req, res) => {
+    const { cartId } = req.params;
+
+    try {
+        const sql = 'DELETE FROM Cart WHERE cart_id = ?';
+        const result = await db.query(sql, [cartId]);
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Item removed from cart' });
+        } else {
+            res.status(404).json({ message: 'Item not found in cart' });
+        }
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).json({ message: 'Failed to remove item from cart' });
+    }
 });
 
 
+// Checkout and create an order
+app.post('/checkout', async (req, res) => {
+    try {
+        const { userId, items } = req.body;
+
+        // Create a new order in the Orders table
+        const orderSql = 'INSERT INTO Orders (user_id, total_price, order_date) VALUES (?, ?, NOW())';
+        // You might want to calculate the total price of the order
+        let totalPrice = 0;
+
+        // Fetch item prices and calculate the total price
+        const itemsWithPrices = await Promise.all(items.map(async (item) => {
+            const itemSql = 'SELECT price FROM Items WHERE item_id = ?';
+            const itemResult = await db.query(itemSql, [item.item_id]);
+            const price = itemResult[0].price;
+            totalPrice += price * item.quantity;  // Calculate the total price for the order
+            return { ...item, price };
+        }));
+
+        // Insert the order with the calculated total price
+        const orderResult = await db.query(orderSql, [userId, totalPrice]);
+        const orderId = orderResult.insertId;
+
+        // Insert each item from the cart into the Order_Items table
+        for (const item of itemsWithPrices) {
+            const orderItemSql = 'INSERT INTO Order_Items (order_id, item_id, quantity, price) VALUES (?, ?, ?, ?)';
+            await db.query(orderItemSql, [orderId, item.item_id, item.quantity, item.price]);
+        }
+
+        // Clear the cart after placing the order
+        await db.query('DELETE FROM Cart WHERE user_id = ?', [userId]);
+
+        res.json({ message: 'Order placed successfully', orderId });
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ message: 'Error processing order' });
+    }
+});
+
+// View user's order history
+app.get('/orders/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const sql = `
+            SELECT Orders.*, Order_Items.*, Items.name, Order_Items.quantity, Order_Items.price
+            FROM Orders
+            JOIN Order_Items ON Orders.order_id = Order_Items.order_id
+            JOIN Items ON Order_Items.item_id = Items.item_id
+            WHERE Orders.user_id = ?
+            ORDER BY Orders.order_date DESC
+        `;
+        const results = await db.query(sql, [userId]);
+        res.json(results);
+    } catch (error) {
+        console.error('Error retrieving order history:', error);
+        res.status(500).json({ message: 'Database error' });
+    }
+});
+
+// Catch-all route for unhandled endpoints
+app.use((req, res) => {
+    res.status(404).json({ message: 'Endpoint not found' });
+});
+
+// Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
