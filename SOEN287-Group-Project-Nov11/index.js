@@ -19,7 +19,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'userDB',
+    //database: 'userDB',
 });
 
 db.query = util.promisify(db.query); // Promisify db.query for async/await

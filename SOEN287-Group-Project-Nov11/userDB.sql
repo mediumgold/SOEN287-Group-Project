@@ -33,6 +33,15 @@ CREATE TABLE IF NOT EXISTS Cart (
     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create Orders table
+CREATE TABLE IF NOT EXISTS Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    total_price DECIMAL(10, 2) NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES userLogin(user_id)
+);
+
 -- Create Order_Items table to store the items in each order
 CREATE TABLE IF NOT EXISTS Order_Items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,15 +53,6 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (item_id) REFERENCES Items(item_id)
 );
 
-
--- Create Orders table
-CREATE TABLE IF NOT EXISTS Orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    total_price DECIMAL(10, 2) NOT NULL,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES userLogin(user_id)
-);
 
 
 CREATE DATABASE IF NOT EXISTS adminDB;
