@@ -23,26 +23,23 @@
         </ul>
 
         <!-- Add logout button -->
-        <button id="logout-button" class="btn" onclick="window.location.href='Account.html'">Logout</button>
-        <button id="logout-in" class="btn" onclick="window.location.href='Login.html'">Login</button>
+        <button id="logout-button" class="btn" onclick="window.location.href='index.html'">Logout</button>
     </nav>
 
     <div class="container">
-        <h2>Edit Business Information</h2>
+        <h2>Edit Customer Information For Administration</Form></h2>
         <p>Business Name: <span id="business-name">Your Business Name</span></p>
         <p>Logo: <span id="business-logo">Your Logo URL</span></p>
-        <p>Address: <span id="business-address">Your Address</span></p>
 
         <h2>Manage Services</h2>
         <form id="service-form">
-            <input type="text" name="service_id" placeholder="Service ID" required>
+            <input type="text" name="Service_id" placeholder="Customer ID" required>
             <input type="text" name="customer_name" placeholder="Customer Name" required>
-            <input type="text" name="service_content" placeholder="Service Content" required>
             <input type="number" name="service_price" placeholder="Service Price" required>
             <button type="submit">Add Service</button>
         </form>
-        <h3>Current Services</h3>
-        <ul id="service-list"></ul>
+        <h2>Current Services</h2>
+        <ul id="current-services"></ul>
 
         <h2>Confirm Service Execution</h2>
         <form id="confirm-service-form">
@@ -69,7 +66,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Customer Name</th>
-                    <th>Service Content</th>
                     <th>Paid Amount</th>
                     <th>Unpaid Amount</th>
                     <th>Status</th>
