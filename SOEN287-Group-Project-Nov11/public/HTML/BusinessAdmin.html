@@ -31,53 +31,100 @@
         <p>Business Name: <span id="business-name">Your Business Name</span></p>
         <p>Logo: <span id="business-logo">Your Logo URL</span></p>
 
-        <h2>Manage Services</h2>
+
+        <!DOCTYPE html>
+        
+        <h2>Manage Orders</h2>
+        <div id="orderListContainer">
+            <table id="orderList">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User ID</th>
+                        <th>Total Price</th>
+                        <th>Order Date</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    <!-- Order data will be rendered here -->
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Manage Admin Services</h2>
         <form id="service-form">
-            <input type="text" name="Service_id" placeholder="Customer ID" required>
-            <input type="text" name="customer_name" placeholder="Customer Name" required>
-            <input type="number" name="service_price" placeholder="Service Price" required>
+            <input type="number" name="order_id" placeholder="Order ID" required>
+            <input type="number" name="user_id" placeholder="User ID" required>
+            <input type="text" name="name" placeholder="Service Name" required>
+            <input name="service_content" placeholder="Service Content" required>
+            <input type="number" name="total_price" placeholder="Total Price" required>
             <button type="submit">Add Service</button>
         </form>
+        
         <h2>Current Services</h2>
         <ul id="current-services"></ul>
 
+        
         <h2>Confirm Service Execution</h2>
         <form id="confirm-service-form">
-            <input type="text" name="service_id" placeholder="Service ID" required>
+            <input type="text" name="order_id" placeholder="Order ID" required>
             <button type="submit">Confirm</button>
         </form>
 
         <h2>Follow Up with Customers for Unpaid Bills</h2>
         <ul id="unpaid-bills-list"></ul>
 
-        <h2>Add Unpaid Customers</h2>
+        <h2>Update Unpaid Customers</h2>
         <form id="unpaid-customer-form">
-            <input type="text" name="customer_id" placeholder="Service ID" required>
+            <input type="text" name="order_id" placeholder="Order ID" required>
             <input type="number" name="unpaid_amount" placeholder="Amount Paid" required>
             <button type="submit">Update Customer</button>
         </form>
-
-        <h3>Unpaid Customers List</h3>
-        <ul id="unpaid-customers-list"></ul>
-
         <h2>Service Overview</h2>
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Customer Name</th>
-                    <th>Paid Amount</th>
-                    <th>Unpaid Amount</th>
-                    <th>Status</th>
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Service Content</th>
+                    <th>Total Price</th>
+                    <th>Paid</th>
+                    <th>Unpaid</th>
                 </tr>
             </thead>
-            <tbody id="service-overview-list">
-                <!-- service-overview-list -->
-            </tbody>
+            <tbody id="service-overview-list"></tbody>
         </table>
-    </div>
+        <button id="updateButton">Update</button>
 
-    <!--<script>
+        <script>
+            
+            const updateButton = document.getElementById('updateButton');
+    
+            
+            updateButton.addEventListener('click', async function() {
+                try {
+                    
+                    const response = await fetch('http://localhost:5500/migrate-data', {
+                        method: 'GET',  
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+    
+                    if (response.ok) {
+                        alert('Data migration started successfully!');
+                    } else {
+                        alert('Failed to start data migration.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while starting the data migration.');
+                }
+            });
+        </script>
+
+    <script>
         // Check admin login
         document.addEventListener('DOMContentLoaded', function() {
             const isAdmin = localStorage.getItem('isAdmin');
@@ -88,7 +135,7 @@
             }
 
         });
-    </script>-->
+    </script>
     <script src="../JS/BusinessAdmin.js"></script>
 </body>
 </html>

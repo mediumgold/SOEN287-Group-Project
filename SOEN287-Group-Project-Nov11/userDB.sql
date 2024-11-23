@@ -1,22 +1,3 @@
-<<<<<<< Updated upstream
-CREATE DATABASE IF NOT EXISTS userDB;
-USE userDB; -- <- database being used
-CREATE TABLE IF NOT EXISTS userLogin (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
-);
-
-CREATE DATABASE IF NOT EXISTS adminDB;
-USE adminDB; -- <- database being used
-CREATE TABLE IF NOT EXISTS adminLogin (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
-);
-=======
 CREATE DATABASE IF NOT EXISTS userDB;
 USE userDB; -- <- database being used
 
@@ -85,14 +66,17 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (item_id) REFERENCES Items(item_id)
 );
 
-CREATE TABLE IF NOT EXISTS Services_Items (
-    Services_id INT AUTO_INCREMENT PRIMARY KEY,
-    Services_order_id INT,
+CREATE TABLE IF NOT EXISTS AdminServices (
+    New_order_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    user_id INT,
     name VARCHAR(255) NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (Services_order_id) REFERENCES Orders(order_id)
+    service_content TEXT,
+    total_price DECIMAL(10, 2) NOT NULL,
+    paid DECIMAL(10, 2) DEFAULT 0,
+    unpaid DECIMAL(10, 2)
 );
 
 
 
->>>>>>> Stashed changes
+

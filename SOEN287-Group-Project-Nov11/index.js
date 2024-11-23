@@ -1,123 +1,3 @@
-<<<<<<< Updated upstream
-
-const express = require('express');
-const mysql = require('mysql');
-const bodyParser = require('body-parser');
-const fs = require('fs'); // Import fs module 
-const path = require('path'); // Import path module
-const cors = require('cors');
-
-
-const app = express();
-const port = 5500;
-
-// app.use(cors({
-//     origin: 'http://localhost:5500'
-// }));
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static('public'));
-
-
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    //database: 'userDB'
-});
-
-/*
-    When the db connects, it'll run the code in the userDB.sql file. Which will create/open the userDB
-*/
-db.connect((err) => {
-    if (err) 
-        throw err;
-    console.log('Connected to database');
-
-    // Read and execute SQL file 
-    const sqlFilePath = path.join(__dirname, 'userDB.sql'); 
-    
-    fs.readFile(sqlFilePath, 'utf8', (err, sql) => { 
-        if (err) 
-            throw err; 
-    
-        // Split SQL commands to execute them sequentially 
-        const sqlCommands = sql.split(';').filter(cmd => cmd.trim() !== ''); 
-    
-        sqlCommands.forEach(command => { 
-            db.query(command, (err, result) => { 
-                if (err) 
-                    throw err; 
-            }); 
-        }); 
-    
-        console.log('SQL file executed successfully'); 
-
-        db.query('USE userDB', (err) => {
-            if (err) 
-                throw err;
-            console.log('Database selected');
-        });
-
-    });
-    
-
-});
-
-
-//Submitting to the database
-app.post('/submit', (req, res) => {
-    
-    const { name, email, password } = req.body
-    const sql = `INSERT INTO userLogin (name, email, password) VALUES ('${name}', '${email}', '${password}')`;
-
-    db.query(sql, (err, result) => { 
-        if (err) { 
-            console.error('Error executing query:', err); 
-            return res.status(500).json({ success: false, message: 'Database error' }); 
-        } 
-        //res.json({ 
-        //     success: true, 
-        //     data: { name, email, password } 
-        // }); 
-
-        //success message and redirect to home index.html and save the current id of the user to userId
-        res.json({ success: true, userId: result.insertId, message: 'Account created successfully', redirectTo: 'index.html' });
-    });
-});
-
-//Reading from the database
-app.post('/login', (req, res) => {
-    //Get email and password from the request
-    const { email, password } = req.body; 
-
-    //Check if there's an email and password that exists.
-    const sql = `SELECT id FROM userLogin WHERE email = ? AND password = ?`;
-
-    db.query(sql, [email, password], (err, results) => {
-        if (err) {
-            console.error('Error executing query:', err);
-            return res.status(500).json({ success: false, message: 'Database error' });
-        }
-
-        if (results.length > 0) {
-            //If user is found, login is successful, record the id
-            const userId = results[0].id;
-            res.json({ success: true, userId: userId, redirectTo: 'index.html' });
-
-        } else {
-            //No user found, login fails
-            res.json({ success: false, message: 'Invalid email or password' });
-        }
-    });
-});
-
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
-=======
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
@@ -358,31 +238,110 @@ app.get('/orders/:userId', async (req, res) => {
     }
 });
 //add
-app.post('/add-service', async (req, res) => {
-    const { serviceId, name, price } = req.body;
 
-    if (!serviceId || !name || !price) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
 
-    const query = 'INSERT INTO Services_Items (Services_order_id, name, price) VALUES (?, ?, ?)';
-    db.query(query, [serviceId, name, price], (err, result) => {
-        if (err) {
-            console.error('Error inserting service:', err);
-            return res.status(500).send('Error adding service');
+app.get('/api/orders', (req, res) => {
+    const query = 'SELECT * FROM Orders';
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching orders:', error);
+            return res.status(500).send('Failed to fetch orders.');
         }
-        res.status(200).json({ message: 'Service added successfully' });
+        res.json(results);
     });
 });
-app.get('/current-services', async (req, res) => {
-    try {
-        const sql = 'SELECT * FROM Services_Items';
-        const result = await db.query(sql);
-        res.json(result); 
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        res.status(500).json({ message: 'Failed to fetch services' });
-    }
+
+app.post('/api/neworders', (req, res) => {
+    const { user_id, total_price } = req.body;  
+
+    const query = 'INSERT INTO Orders (user_id, total_price) VALUES (?, ?)';
+    
+
+    db.query(query, [user_id, total_price], (error, results) => {
+        if (error) {
+            console.error('Error inserting order:', error);
+            return res.status(500).send('Failed to add order');
+        }
+        
+        res.status(201).json({ message: 'Order added successfully', order_id: results.insertId });
+    });
+});
+
+app.post('/api/services', (req, res) => {
+    const { order_id, user_id, name, service_content, total_price, paid, unpaid } = req.body;
+
+    const query = `
+        INSERT INTO AdminServices (order_id, user_id, name, service_content, total_price, paid, unpaid)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    db.query(query, [order_id, user_id, name, service_content, total_price, paid, unpaid], (error, results) => {
+        if (error) {
+            console.error('Error inserting service:', error);
+            return res.status(500).send('Failed to add service.');
+        }
+        res.status(200).json({ message: 'Service added successfully.' });
+    });
+});
+
+
+app.get('/api/services', (req, res) => {
+    const query = 'SELECT * FROM services';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching services:', err);
+            res.status(500).send('Error fetching services');
+        } else {
+            res.json(results);  
+        }
+    });
+});
+
+app.put('/api/services/:orderId', (req, res) => {
+    const { orderId } = req.params;
+    const { user_id, name, service_content, total_price, paid, unpaid } = req.body;
+
+    const query = `
+        UPDATE AdminServices
+        SET user_id = ?, name = ?, service_content = ?, total_price = ?, paid = ?, unpaid = ?
+        WHERE order_id = ?
+    `;
+
+    db.query(query, [user_id, name, service_content, total_price, paid, unpaid, orderId], (error, results) => {
+        if (error) {
+            console.error('Error updating service:', error);
+            return res.status(500).send('Failed to update service.');
+        }
+
+        if (results.affectedRows > 0) {
+            res.status(200).json({ message: 'Service updated successfully.' });
+        } else {
+            res.status(404).send('Order ID not found.');
+        }
+    });
+});
+
+app.get('/api/unpaid', (req, res) => {
+    const query = `
+        SELECT user_id, name, unpaid
+        FROM AdminServices
+        WHERE unpaid > 0
+    `;
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching unpaid bills:', error);
+            return res.status(500).send('Failed to fetch unpaid bills.');
+        }
+        res.status(200).json(results);
+    });
+});
+
+const { migrateData } = require('./businessAdmin');
+
+app.get('/migrate-data', (req, res) => {
+    migrateData();  
+    res.send('Data migration started...');
 });
 
 // Catch-all route for unhandled endpoints
@@ -398,4 +357,3 @@ app.listen(port, () => {
 
 
 
->>>>>>> Stashed changes
