@@ -9,6 +9,20 @@ CREATE TABLE IF NOT EXISTS userLogin (
     password VARCHAR(255) NOT NULL
 );
 
+-- Create adminLogin table
+CREATE TABLE IF NOT EXISTS adminLogin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+INSERT IGNORE INTO adminLogin (name, email, password) VALUES
+('Yumo', 'yumo@gmail.com', '123'),
+('Nathan', 'nathan@gmail.com', '123'),
+('Alex', 'alex@gmail.com', '123'),
+('Nick', 'nick@gmail.com', '123');
+
 -- Create Items table
 CREATE TABLE IF NOT EXISTS Items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,15 +67,36 @@ CREATE TABLE IF NOT EXISTS Order_Items (
     FOREIGN KEY (item_id) REFERENCES Items(item_id)
 );
 
-
-
-CREATE DATABASE IF NOT EXISTS adminDB;
-USE adminDB; -- <- database being used
-
--- Create adminLogin table
-CREATE TABLE IF NOT EXISTS adminLogin (
+-- Create contactMessages table
+CREATE TABLE IF NOT EXISTS contactMessages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    message TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS AdminServices (
+    New_order_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    user_id INT,
+    name VARCHAR(255) NOT NULL,
+    service_content TEXT,
+    total_price DECIMAL(10, 2) NOT NULL,
+    paid DECIMAL(10, 2) DEFAULT 0,
+    unpaid DECIMAL(10, 2)
+);
+
+
+CREATE TABLE IF NOT EXISTS services (
+    service_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    logo_url VARCHAR(255),
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
+

@@ -4,13 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../CSS/contact.css" />
+    <script src="../js/contact.js"></script>
     <title>COMPANY NAME CONTACT</title>
   </head>
   <body>
     <nav class="navbar">
       <div class="company-nav-logo">
-          <a href="index.html"><img src="../assets/company logo placeholder for a website.png"/></a>
-          <h2 id="title">Company Name</h2>
+        <a href="index.html"
+          ><img src="../assets/company logo placeholder for a website.png"
+        /></a>
+        <h2 id="title">Company Name</h2>
       </div>
       <ul class="nav-links">
         <li class="link"><a href="index.html">Home</a></li>
@@ -40,11 +43,7 @@
           Have questions? Send us an email and let us know. We'll be glad to
           help!
         </p>
-        <form
-          action="mailto:your-email@example.com"
-          method="POST"
-          enctype="text/plain"
-        >
+        <form id="contactForm">
           <label for="name">Name:</label>
           <input type="text" id="name" name="name" required />
 
@@ -52,7 +51,12 @@
           <input type="email" id="email" name="email" required />
 
           <label for="message">Message:</label>
-          <textarea id="message" name="message" rows="4" required></textarea>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            placeholder="Write a request"
+          ></textarea>
 
           <button type="submit">Send Message</button>
         </form>

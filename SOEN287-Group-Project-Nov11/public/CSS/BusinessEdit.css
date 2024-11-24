@@ -1,0 +1,191 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Colors */
+:root {
+    --light-green: #DFF2EB;
+    --light-blue: #B9E5E8;
+    --medium-blue: #7AB2D3;
+    --dark-blue: #4A628A;
+}
+
+/* Body Styling */
+body {
+    background-color: var(--light-green);
+    color: var(--dark-blue);
+    line-height: 1.6;
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--medium-blue);
+    padding: 10px 20px;
+}
+
+.company-nav-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.company-nav-logo img {
+    height: 50px; 
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 0;
+    border-radius: 50%;
+    transition: none; /* Removes highlight over image */
+}
+
+.company-nav-logo #title {
+    margin: 0;
+    text-align: center;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between; 
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links .link {
+    margin-right: 20px;
+}
+
+.navbar a {
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none; 
+    font-size: 17px;
+    font-weight: bold;
+    transition: color 0.3s;
+    color: var(--dark-blue);
+}
+
+.nav-links a:hover {
+    color: var(--light-green);
+}
+
+.btn {
+    background-color: var(--medium-blue);
+    color: var(--dark-blue);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 17px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    color: var(--light-green);
+}
+
+/* Container */
+.container {
+    padding: 2rem;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 2rem;
+}
+
+form input, form textarea {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid var(--dark-blue);
+    border-radius: 5px;
+}
+
+/* Buttons for forms */
+form button {
+    padding: 0.5rem 1rem;
+    background-color: var(--medium-blue);
+    color: var(--light-green);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+form button:hover {
+    background-color: var(--dark-blue);
+}
+
+/* Logout Button */
+#logout-btn {
+    float: right;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: var(--dark-blue);
+    color: var(--light-green);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+#logout-btn:hover {
+    background-color: var(--medium-blue);
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: var(--dark-blue);
+    font-size: 18px;
+}
+
+a:hover {
+    color: var(--medium-blue);
+}
+
+/* Buttons for Update and Confirm (Make them larger and more prominent) */
+#updateButton, #confirmServiceButton {
+    font-size: 18px; /* Larger font size */
+    padding: 15px 30px; /* Larger padding */
+    background-color: var(--dark-blue);
+    color: var(--light-green);
+    border-radius: 8px; /* Slightly more rounded corners */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+    width: 200px; /* Set a fixed width */
+    margin-top: 20px; /* Add some spacing from other elements */
+}
+
+#updateButton:hover, #confirmServiceButton:hover {
+    background-color: var(--light-green);
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Bottom Link */
+#back-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#back-link a {
+    font-size: 18px;
+    color: var(--dark-blue);
+}
+
+#back-link a:hover {
+    color: var(--medium-blue);
+}

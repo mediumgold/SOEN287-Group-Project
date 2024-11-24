@@ -102,7 +102,27 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Database error' });
     }
 });
+// Admin login
+app.post('/admin-login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const sql = 'SELECT id FROM adminLogin WHERE email = ? AND password = ?';
+        const results = await db.query(sql, [email, password]);
 
+        if (results.length > 0) {
+            res.json({
+                success: true,
+                userId: results[0].id,  
+                redirectTo: 'BusinessAdmin.html',  
+            });
+        } else {
+            res.json({ success: false, message: 'Invalid email or password' });
+        }
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).json({ message: 'Database error' });
+    }
+});
 // Add item to cart
 app.post('/cart', async (req, res) => {
     const { userId, itemId, quantity } = req.body;
@@ -218,7 +238,306 @@ app.get('/orders/:userId', async (req, res) => {
     }
 });
 
-// Catch-all route for unhandled endpoints
+// Handle form submission from the contact page
+app.post("/submitContact", async (req, res) => {
+    const { name, email, message } = req.body;
+  
+    try {
+      // Insert into database (example SQL query)
+      const sql =
+        "INSERT INTO contactMessages (name, email, message) VALUES (?, ?, ?)";
+      await db.query(sql, [name, email, message]);
+  
+      res.status(200).send("Message submitted successfully!");
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).send("Failed to save the message. Please try again later.");
+    }
+  });
+
+
+app.get('/api/orders', (req, res) => {
+    const query = 'SELECT * FROM Orders';
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching orders:', error);
+            return res.status(500).send('Failed to fetch orders.');
+        }
+        res.json(results);
+    });
+});
+
+app.post('/api/neworders', (req, res) => {
+    const { user_id, total_price } = req.body;  
+
+    const query = 'INSERT INTO Orders (user_id, total_price) VALUES (?, ?)';
+    
+
+    db.query(query, [user_id, total_price], (error, results) => {
+        if (error) {
+            console.error('Error inserting order:', error);
+            return res.status(500).send('Failed to add order');
+        }
+        
+        res.status(201).json({ message: 'Order added successfully', order_id: results.insertId });
+    });
+});
+
+app.post('/api/services', (req, res) => {
+    const { order_id, user_id, name, service_content, total_price, paid, unpaid } = req.body;
+
+    const query = `
+        INSERT INTO AdminServices (order_id, user_id, name, service_content, total_price, paid, unpaid)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    db.query(query, [order_id, user_id, name, service_content, total_price, paid, unpaid], (error, results) => {
+        if (error) {
+            console.error('Error inserting service:', error);
+            return res.status(500).send('Failed to add service.');
+        }
+        res.status(200).json({ message: 'Service added successfully.' });
+    });
+});
+
+
+app.get('/api/services', (req, res) => {
+    const query = 'SELECT * FROM services';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching services:', err);
+            res.status(500).send('Error fetching services');
+        } else {
+            res.json(results);  
+        }
+    });
+});
+
+app.put('/api/services/:orderId', (req, res) => {
+    const { orderId } = req.params;
+    const { user_id, name, service_content, total_price, paid, unpaid } = req.body;
+
+    const query = `
+        UPDATE AdminServices
+        SET user_id = ?, name = ?, service_content = ?, total_price = ?, paid = ?, unpaid = ?
+        WHERE order_id = ?
+    `;
+
+    db.query(query, [user_id, name, service_content, total_price, paid, unpaid, orderId], (error, results) => {
+        if (error) {
+            console.error('Error updating service:', error);
+            return res.status(500).send('Failed to update service.');
+        }
+
+        if (results.affectedRows > 0) {
+            res.status(200).json({ message: 'Service updated successfully.' });
+        } else {
+            res.status(404).send('Order ID not found.');
+        }
+    });
+});
+
+app.get('/api/unpaid', (req, res) => {
+    const query = `
+        SELECT user_id, name, unpaid
+        FROM AdminServices
+        WHERE unpaid > 0
+    `;
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching unpaid bills:', error);
+            return res.status(500).send('Failed to fetch unpaid bills.');
+        }
+        res.status(200).json(results);
+    });
+});
+
+//const { migrateData } = require('../JS/BusinessAdmin.js');
+
+//app.get('/migrate-data', (req, res) => {
+//    migrateData();  
+ //   res.send('Data migration started...');
+//});
+app.post('/api/updateOrderPrice', (req, res) => {
+    const { order_id, total_price } = req.body;
+
+    console.log('Received data:', req.body);
+
+    if (!order_id || !total_price) {
+        console.error('Missing required fields');
+        return res.status(400).json({ message: 'Order ID and Total Price are required.' });
+    }
+
+    const query = 'UPDATE Orders SET total_price = ? WHERE order_id = ?';
+    db.query(query, [total_price, order_id], (err, result) => {
+        if (err) {
+            console.error('Error updating order:', err);
+            return res.status(500).json({ message: 'Failed to update order.' });
+        }
+
+        console.log('Update result:', result);
+
+        if (result.affectedRows > 0) {
+            return res.status(200).json({ message: 'Order updated successfully!' });
+        } else {
+            console.warn('Order not found for ID:', order_id);
+            return res.status(404).json({ message: 'Order not found.' });
+        }
+    });
+});
+
+app.post('/api/deleteOrder', (req, res) => {
+    const { order_id } = req.body;
+
+    // Validate input
+    if (!order_id) {
+        return res.status(400).json({ message: 'Order ID is required.' });
+    }
+
+    // Delete query
+    const query = 'DELETE FROM Orders WHERE order_id = ?';
+    db.query(query, [order_id], (err, result) => {  // Change db.execute to db.query
+        if (err) {
+            console.error('Error deleting order:', err);  // Enhanced error logging
+            return res.status(500).json({ message: 'Failed to delete order.', error: err });
+        }
+
+        // Log the result to see what the query returned
+        console.log('Delete result:', result);
+
+        if (result.affectedRows > 0) {
+            return res.status(200).json({ message: 'Order deleted successfully!' });
+        } else {
+            return res.status(404).json({ message: 'Order not found.' });
+        }
+    });
+});
+
+
+
+
+// POST API to add an order
+app.post('/api/addOrder', (req, res) => {
+    const { user_id, total_price } = req.body;
+
+    console.log('Received data:', req.body);  // 打印接收到的数据，检查是否包含正确字段
+
+    if (!user_id || !total_price) {
+        return res.status(400).json({ message: 'User ID and Total Price are required.' });
+    }
+
+    const query = 'INSERT INTO Orders (user_id, total_price) VALUES (?, ?)';
+    db.query(query, [user_id, total_price], (err, result) => {
+        if (err) {
+            console.error('Error inserting order:', err);
+            return res.status(500).json({ message: 'Failed to add order.' });
+        }
+
+        return res.status(200).json({ message: 'Order added successfully!' });
+    });
+});
+
+
+// Route to mark an order as pending
+app.post('/api/markAsPending', (req, res) => {
+    const { order_id, user_id } = req.body;
+
+    if (!order_id || !user_id) {
+        return res.status(400).json({ message: 'Order ID and User ID are required.' });
+    }
+
+    console.log('Received order_id:', order_id, 'Received user_id:', user_id);  // 打印传入的值
+
+    const query = 'UPDATE Orders SET payment_status = 0 WHERE order_id = ? AND user_id = ?';
+    
+    console.log('Executing query:', query, 'with params:', [order_id, user_id]);  // 打印 SQL 查询和参数
+
+    db.query(query, [order_id, user_id], (err, result) => {
+        if (err) {
+            console.error('Error marking order as pending:', err);
+            return res.status(500).json({ message: 'Failed to mark order as pending.' });
+        }
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Order marked as pending.' });
+        } else {
+            res.status(404).json({ message: 'Order not found.' });
+        }
+    });
+});
+
+// 获取所有 pending 订单
+app.get('/api/getPendingOrders', (req, res) => {
+    const query = 'SELECT * FROM Orders WHERE payment_status = 0';  // 0 means pending
+    db.query(query, (err, result) => {
+        if (err) {
+            console.error('Error fetching pending orders:', err);
+            return res.status(500).json({ message: 'Failed to retrieve orders.' });
+        }
+        res.json(result);  // Send back the list of pending orders
+    });
+});
+
+// 更新订单为已支付
+app.put('/api/removeOrder/:orderId', (req, res) => {
+    const orderId = req.params.orderId;
+
+    const query = 'UPDATE Orders SET payment_status = 1 WHERE order_id = ?'; // payment_status = 1 means paid
+    db.query(query, [orderId], (err, result) => {
+        if (err) {
+            console.error('Error removing order:', err);
+            return res.status(500).json({ message: 'Failed to mark order as paid.' });
+        }
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Order marked as paid.' });
+        } else {
+            res.status(404).json({ message: 'Order not found.' });
+        }
+    });
+});
+
+app.post('/api/editItem', (req, res) => {
+    const { item_id, price, description } = req.body;
+
+    const updates = [];
+    if (price) updates.push(`price = ${mysql.escape(price)}`);
+    if (description) updates.push(`description = ${mysql.escape(description)}`);
+
+    if (updates.length === 0) {
+        return res.status(400).send('No updates provided.');
+    }
+
+    const sql = `UPDATE Items SET ${updates.join(', ')} WHERE item_id = ${mysql.escape(item_id)}`;
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).send(err.message);
+        res.send(result.affectedRows > 0 ? 'Item updated successfully!' : 'Item not found.');
+    });
+});
+
+// Add a new item
+app.post('/api/addItem', (req, res) => {
+    const { name, price, description } = req.body;
+
+    const sql = 'INSERT INTO Items (name, price, description) VALUES (?, ?, ?)';
+    db.query(sql, [name, price, description], (err, result) => {
+        if (err) return res.status(500).send(err.message);
+        res.send('Item added successfully!');
+    });
+});
+
+// Delete an item
+app.post('/api/deleteItem', (req, res) => {
+    const { item_id } = req.body;
+
+    const sql = 'DELETE FROM Items WHERE item_id = ?';
+    db.query(sql, [item_id], (err, result) => {
+        if (err) return res.status(500).send(err.message);
+        res.send(result.affectedRows > 0 ? 'Item deleted successfully!' : 'Item not found.');
+    });
+});
+
 app.use((req, res) => {
     res.status(404).json({ message: 'Endpoint not found' });
 });
