@@ -10,14 +10,88 @@
     margin: 0;
     padding: 0;
     color: var(--dark-blue);
-    line-height: 1.6;
   }
   
-  header {
-    background-color: var(--light-blue);
-    padding: 2rem 1.5rem;
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--medium-blue);
+    padding: 10px 20px;
+}
+
+.company-nav-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.company-nav-logo img {
+    height: 50px; 
+    margin-bottom: 10px;
+    width: 100%;
+    padding:0%;
+    border-radius: 50%;
+    transition: none; /*Removes highlight over image*/
+}
+
+.company-nav-logo #title {
+    margin: 0;
     text-align: center;
-  }
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between; 
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links .link {
+    margin-right: 20px;
+}
+
+.navbar a {
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none; 
+    font-size: 17px;
+    font-weight: bold;
+    transition: color 0.3s;
+    color: var(--dark-blue);
+}
+
+.nav-links a:hover{
+    color: var(--light-green);
+}
+
+.btn{
+    background-color: var(--medium-blue);
+    color: var(--dark-blue);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 17px;
+    transition: background-color 0.3s;
+}
+
+.btn a{
+    
+}
+
+.btn a:hover {
+    color: var(--light-green);
+}
+
+header {
+  background-color: var(--light-blue);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
   
   main {
     padding: 2rem 1.5rem;
@@ -63,64 +137,6 @@
     color: var(--light-green);
   }
   
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--medium-blue);
-    padding: 10px 20px;
-  }
-  
-  .company-nav-logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .company-nav-logo img {
-    height: 50px;
-    margin-bottom: 10px;
-    width: 100%;
-    border-radius: 50%;
-  }
-  
-  .nav-links {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .nav-links .link {
-    margin-right: 20px;
-  }
-  
-  .navbar a {
-    padding: 14px 20px;
-    text-decoration: none;
-    font-size: 17px;
-    font-weight: bold;
-    color: var(--dark-blue);
-    transition: color 0.3s;
-  }
-  
-  .nav-links a:hover {
-    color: var(--light-green);
-  }
-  
-  .btn {
-    background-color: var(--medium-blue);
-    color: var(--dark-blue);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .btn:hover {
-    color: var(--light-green);
-  }
   
   .footer-bar {
     text-align: center;
