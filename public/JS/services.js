@@ -63,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //once logged in, we will change the contents and href of btn2 (create account) to log out and index.html
         btn2.querySelector('a').innerText = 'Logout';
-        btn2.querySelector('a').href = '#'; // we want to prevent it from going right away, (only want it onclick)
 
+        // we want to prevent it from going right away, (only want it onclick)
+        btn2.querySelector('a').href = '#'; 
+        
         //onclick, logout and go to home page
         btn2.onclick = function(){
             //clear login status
@@ -76,9 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
 
-        // signInDiv.style.display = 'none';
-        // loginStatus.style.display = 'flex';
-        // loginStatus.innerText = 'You are logged in';
     } else {
         loginStatus.style.display = '';
     }
