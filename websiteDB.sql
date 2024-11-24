@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS userDB;
-USE userDB; -- <- database being used
+CREATE DATABASE IF NOT EXISTS websiteDB;
+USE websiteDB; -- <- database being used
 
 -- Create userLogin table
 CREATE TABLE IF NOT EXISTS userLogin (

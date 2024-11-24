@@ -19,14 +19,13 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    //database: 'userDB',
 });
 
 db.query = util.promisify(db.query); // Promisify db.query for async/await
 
 const initDB = async () => {
     try {
-        const sqlFilePath = path.join(__dirname, 'userDB.sql');
+        const sqlFilePath = path.join(__dirname, 'websiteDB.sql');
         const sql = fs.readFileSync(sqlFilePath, 'utf8');
         const sqlCommands = sql.split(';').filter(cmd => cmd.trim() !== '');
         for (const command of sqlCommands) {
@@ -44,7 +43,7 @@ db.connect(async (err) => {
 
     try {
         // Initialize the database using the SQL file
-        const sqlFilePath = path.join(__dirname, 'userDB.sql');
+        const sqlFilePath = path.join(__dirname, 'websiteDB.sql');
         const sql = fs.readFileSync(sqlFilePath, 'utf8');
         const sqlCommands = sql.split(';').filter(cmd => cmd.trim() !== '');
         for (const command of sqlCommands) {
@@ -52,9 +51,9 @@ db.connect(async (err) => {
         }
         console.log('Database initialized');
 
-        // Explicitly select the userDB database
-        await db.query('USE userDB');
-        console.log('Database switched to userDB');
+        // Explicitly select the websiteDB database
+        await db.query('USE websiteDB');
+        console.log('Database switched to websiteDB');
     } catch (error) {
         console.error('Error during database initialization:', error);
         process.exit(1); // Exit if initialization fails
