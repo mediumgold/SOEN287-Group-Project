@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const isAdmin = localStorage.getItem('isAdmin');
 
-    if (!isAdmin || isAdmin !== 'true') {
-        alert('Access denied. Admins only.');
-        window.location.href = 'login.html';  // Redirect to login page if not admin
-    }
+    //if (!isAdmin || isAdmin !== 'true') {
+    //    alert('Access denied. Admins only.');
+    //    window.location.href = 'login.html';  // Redirect to login page if not admin
+    //}
 
     const logoutButton = document.getElementById('logout-btn');
     logoutButton.addEventListener('click', function() {

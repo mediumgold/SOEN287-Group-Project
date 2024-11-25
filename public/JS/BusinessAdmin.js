@@ -241,11 +241,11 @@ logoutButton.onclick = function () {
     window.location.href = 'login.html'; // Redirect to login page
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    const isAdmin = localStorage.getItem('isAdmin');
-
-    if (!isAdmin || isAdmin !== 'true') {
-        alert('Access denied. Admins only.');
-        window.location.href = 'login.html';  // Redirect to login page if not admin
-    }
-});
+//document.addEventListener('DOMContentLoaded', function() {
+//    const isAdmin = localStorage.getItem('isAdmin');
+//
+//    if (!isAdmin || isAdmin !== 'true') {
+//        alert('Access denied. Admins only.');
+//        window.location.href = 'login.html';  // Redirect to login page if not admin
+//    }
+//});
