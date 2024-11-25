@@ -105,23 +105,55 @@ app.post('/login', async (req, res) => {
 app.post('/admin-login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const sql = 'SELECT id FROM adminLogin WHERE email = ? AND password = ?';
-        const results = await db.query(sql, [email, password]);
 
-        if (results.length > 0) {
-            res.json({
-                success: true,
-                userId: results[0].id,  
-                redirectTo: 'BusinessAdmin.html',  
+        // Ensure email and password are provided
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email and password are required'
             });
-        } else {
-            res.json({ success: false, message: 'Invalid email or password' });
         }
+
+        // SQL query to check admin login with plain password
+        const sql = 'SELECT id, password FROM adminLogin WHERE email = ?';
+        
+        // Querying the database
+        db.query(sql, [email], (err, results) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
+                });
+            }
+
+            // If the user exists
+            if (results.length > 0) {
+                const storedPassword = results[0].password;
+
+                // Directly compare the plain text password
+                if (storedPassword === password) {
+                    return res.json({
+                        success: true,
+                        userId: results[0].id,
+                        redirectTo: 'BusinessAdmin.html'
+                    });
+                }
+            }
+
+            // If no match is found or email/password incorrect
+            res.json({ success: false, message: 'Invalid email or password' });
+        });
+
     } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ message: 'Database error' });
+        console.error('Error logging in:', error.message);
+        res.status(500).json({
+            success: false,
+            message: 'Database error occurred'
+        });
     }
 });
+
 // Add item to cart
 app.post('/cart', async (req, res) => {
     const { userId, itemId, quantity } = req.body;

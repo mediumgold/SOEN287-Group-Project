@@ -89,3 +89,28 @@ document.getElementById('update-logo-form').addEventListener('submit', async (e)
         alert('An error occurred while updating the logo.');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const logoutButton = document.getElementById('logoutButton');
+
+    if (logoutButton) {
+        logoutButton.onclick = function () {
+            alert("Logging out...");
+
+            // Clear login state from localStorage
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('isAdmin');  // Remove admin status if present
+
+            // Redirect to the home page (index.html)
+            window.location.href = 'index.html';  // Redirect to the home page
+        };
+    }
+
+    // Admin access check
+    const isAdmin = localStorage.getItem('isAdmin');
+    if (!isAdmin || isAdmin !== 'true') {
+        alert('Access denied. Admins only.');
+        window.location.href = 'login.html';  // Redirect to login page if not an admin
+    }
+});

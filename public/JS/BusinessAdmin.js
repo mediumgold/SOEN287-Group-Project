@@ -238,9 +238,15 @@ async function handleRemoveOrder(event) {
 
 logoutButton.onclick = function () {
     alert("Logging out...");
-    window.location.href = 'login.html'; // Redirect to login page
-};
+    
+    // Clear login state from localStorage
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');  // Remove admin status if present
 
+    // Redirect to the home page (index.html)
+    window.location.href = 'index.html';
+};
 //document.addEventListener('DOMContentLoaded', function() {
 //    const isAdmin = localStorage.getItem('isAdmin');
 //
