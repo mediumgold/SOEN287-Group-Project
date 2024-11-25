@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/BusinessAdmin.css">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="company-nav-logo">
+            <a href="index.html"><img src="../assets/company logo placeholder for a website.png" alt="Company Logo"/></a>
+            <h2 id="title">Company Name</h2>
+        </div>
+
+        <ul class="nav-links">
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="services.html">Services</a></li>
+            <li class="link"><a href="about.html">About</a></li>
+            <li class="link"><a href="contact.html">Contact</a></li>
+            <li class="link"><a href="account.html">Account</a></li>
+            <li class="link"><a href="cart.html">Cart</a></li>
+        </ul>
+
+        <!-- Add logout button -->
+        <button id="logout-button" class="btn" onclick="window.location.href='index.html'">Logout</button>
+    </nav>
+
+    <div class="container">
+        <h2>Edit Customer Information For Administration</h2>
+        <p>Business Name: <span id="business-name">Your Business Name</span></p>
+        <p>Logo: <span id="business-logo">Your Logo URL</span></p>
+
+        <h2>Manage Orders</h2>
+        <div id="orderListContainer">
+            <table id="orderList">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User ID</th>
+                        <th>Total Price</th>
+                        <th>Order Date</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    <!-- Order data will be rendered here -->
+                </tbody>
+            </table>
+        </div>
+        <h2>Edit Order Total Price</h2>
+
+        <form id="order-form">
+            <input type="number" name="order_id" placeholder="Order ID" required><br><br>
+            <input type="number" name="total_price" step="0.01" placeholder="New Total Price" required><br><br>
+            <button type="submit">Update Order</button>
+        </form>
+
+        <h2>Delete Order</h2>
+
+        <form id="delete-order-form">
+            <input type="number" name="order_id" placeholder="Order ID" required><br><br>
+            <button type="submit">Delete Order</button>
+        </form>
+
+        <h2>Add Order</h2>
+    
+    <!-- Form for adding order -->
+        <form id="add-order-form">
+            <input type="number" name="user_id" placeholder="User ID" required>
+            <input type="number" name="total_price" placeholder="Total Price" required>
+            <button type="submit">Add Order</button>
+        </form>
+    
+        <h2>Pending Orders</h2>
+
+    <!-- Form to input Order ID and User ID -->
+    <h3>Mark Order as Pending</h3>
+    <form id="mark-pending-form">
+        <input type="number" name="order_id" placeholder="Order ID" required>
+        <input type="number" name="user_id" placeholder="User ID" required>
+        <button type="submit">Mark as Pending</button>
+    </form>
+
+    <!-- List of pending orders -->
+    <h2>Pending Orders</h2>
+    <table id="pending-orders">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Total Price</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- Orders will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+
+        <!-- Add a new link to navigate to another page (e.g., Update Services Page) -->
+        <h2>Other Actions</h2>
+        <p>For more service management options, visit the <a href="BusinessEdit.html">Update Services Page</a>.</p>
+
+        <script>
+            // Check admin login
+            document.addEventListener('DOMContentLoaded', function() {
+                const isAdmin = localStorage.getItem('isAdmin');
+
+                if (!isAdmin || isAdmin !== 'true') {
+                    alert('Access denied. Admins only.');
+                    window.location.href = 'login.html';  // Redirect to login page if not admin
+                }
+            });
+        </script>
+        <script src="../JS/BusinessAdmin.js"></script>
+    </div>
+</body>
+</html>
