@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 
 
@@ -18,6 +19,31 @@ document.getElementById('edit-form').addEventListener('submit', async (e) => {
         alert('An error occurred while updating the item.');
     }
 });
+=======
+//document.addEventListener('DOMContentLoaded', function () {
+//    const isAdmin = localStorage.getItem('isAdmin'); // Check if the user is an admin
+//    const logoutButton = document.getElementById('logoutButton'); // Assume you have a logout button with id "logoutButton"
+
+    // If the user is not an admin, redirect them to the login page
+//    if (!isAdmin || isAdmin !== 'true') {
+//        alert('Access denied. Admins only.');
+//        window.location.href = 'login.html';  // Redirect to login page if not an admin
+//    }
+
+    // Handle logout
+//    logoutButton.onclick = function () {
+//        alert("Logging out...");
+
+        // Clear login state
+//        localStorage.removeItem('loggedIn');
+//        localStorage.removeItem('userId');
+//        localStorage.removeItem('isAdmin');  // Remove admin status if present
+
+        // Redirect to index.html after logout
+  //      window.location.href = 'index.html';
+  //  };
+//});
+>>>>>>> Stashed changes
 
 document.getElementById('add-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -124,6 +150,31 @@ const isAdmin = localStorage.getItem('isAdmin');
         alert('Access denied. Admins only.');
        window.location.href = 'login.html';  // Redirect to login page if not an admin
     }
+<<<<<<< Updated upstream
+=======
+  
+    // Update the address on button click
+    updateAddressBtn.addEventListener("click", () => {
+      const newAddress = addressInput.value.trim();
+      if (newAddress) {
+        // Save the new address to localStorage
+        localStorage.setItem("businessAddress", newAddress);
+  
+        // Update the displayed address
+        businessAddressSpan.textContent = newAddress;
+      } else {
+        alert("Please enter a valid address.");
+      }
+    });
+  });
+  
+const logoutButton = document.getElementById('logout-button');
+const isAdmin = localStorage.getItem('isAdmin');
+   if (!isAdmin || isAdmin !== 'true') {
+        alert('Access denied. Admins only.');
+       window.location.href = 'login.html';  // Redirect to login page if not an admin
+    }
+>>>>>>> Stashed changes
 logoutButton.onclick = function () {
     alert("Logging out...");
     
