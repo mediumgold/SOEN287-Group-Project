@@ -1,87 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/BusinessAdmin.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-</head>
-<body>
+    <link rel="stylesheet" href="../CSS/BusinessAdmin.css" />
+    <script src="../JS/BusinessAdmin.js"></script>
+    <script src="../JS/shared.js"></script>
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="company-nav-logo">
-            <a href="index.html"><img src="../assets/company logo placeholder for a website.png" alt="Company Logo"/></a>
-            <h2 id="title">Company Name</h2>
-        </div>
+      <div class="company-nav-logo">
+        <a href="index.html"
+          ><img
+            id="logo"
+            src="../assets/company logo placeholder for a website.png"
+        /></a>
+        <h2 id="title">Company Name</h2>
+      </div>
 
-        <ul class="nav-links">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="services.html">Services</a></li>
-            <li class="link"><a href="about.html">About</a></li>
-            <li class="link"><a href="contact.html">Contact</a></li>
-            <li class="link"><a href="account.html">Account</a></li>
-            <li class="link"><a href="cart.html">Cart</a></li>
-        </ul>
-
-        <!-- Add logout button -->
-        <button id="logout-button" class="btn" onclick="window.location.href='Account.html'">Logout</button>
-        <button id="logout-in" class="btn" onclick="window.location.href='Login.html'">Login</button>
+      <ul class="nav-links">
+        <li class="link"><a href="index.html">Home</a></li>
+        <li class="link"><a href="services.html">Services</a></li>
+        <li class="link"><a href="about.html">About</a></li>
+        <li class="link"><a href="contact.html">Contact</a></li>
+        <li class="link"><a href="cart.html">Cart</a></li>
+      </ul>
+      <div id="signInDiv">
+        <button id="signIn" class="btn">
+          <a href="login.html">Sign In</a>
+        </button>
+        <button id="createAcc" class="btn">
+          <a href="signup.html">Create Account</a>
+        </button>
+      </div>
+      <div id="loginStatus"></div>
     </nav>
 
     <div class="container">
-        <h2>Edit Business Information</h2>
-        <p>Business Name: <span id="business-name">Your Business Name</span></p>
-        <p>Logo: <span id="business-logo">Your Logo URL</span></p>
-        <p>Address: <span id="business-address">Your Address</span></p>
-
-        <h2>Manage Services</h2>
-        <form id="service-form">
-            <input type="text" name="service_id" placeholder="Service ID" required>
-            <input type="text" name="customer_name" placeholder="Customer Name" required>
-            <input type="text" name="service_content" placeholder="Service Content" required>
-            <input type="number" name="service_price" placeholder="Service Price" required>
-            <button type="submit">Add Service</button>
+      <h2>Edit Business Information</h2>
+      <p>Business Name: <span id="business-name">Your Business Name</span>
+        <form action="" method="POST">
+            <label for="nameInput">Change Name:</label>
+            <input type="text" id="nameInput" placeholder="Enter new company name">
+            <button type="button" id="updateNameBtn">Update Name</button>
         </form>
-        <h3>Current Services</h3>
-        <ul id="service-list"></ul>
-
-        <h2>Confirm Service Execution</h2>
-        <form id="confirm-service-form">
-            <input type="text" name="service_id" placeholder="Service ID" required>
-            <button type="submit">Confirm</button>
+      </p>
+      <p>Logo: <span id="business-logo"></span></p>
+      <form action="" method="POST">
+        <label for="logoInput">Edit the logo:</label>
+        <input type="file" id="logoInput" accept="image/*" />
+      </form>
+      <p>Address: <span id="business-address">Your Address</span>
+        <form action="" method="POST">
+            <label for="addressInput">Change Address:</label>
+            <input type="text" id="addressInput" placeholder="Enter new address">
+            <button type="button" id="updateAddressBtn">Update Address</button>
         </form>
+      </p>
 
-        <h2>Follow Up with Customers for Unpaid Bills</h2>
-        <ul id="unpaid-bills-list"></ul>
+      <h2>Manage Services</h2>
+      <form id="service-form">
+        <input
+          type="text"
+          name="service_id"
+          placeholder="Service ID"
+          required
+        />
+        <input
+          type="text"
+          name="customer_name"
+          placeholder="Customer Name"
+          required
+        />
+        <input
+          type="text"
+          name="service_content"
+          placeholder="Service Content"
+          required
+        />
+        <input
+          type="number"
+          name="service_price"
+          placeholder="Service Price"
+          required
+        />
+        <button type="submit">Add Service</button>
+      </form>
+      <h3>Current Services</h3>
+      <ul id="service-list"></ul>
 
-        <h2>Add Unpaid Customers</h2>
-        <form id="unpaid-customer-form">
-            <input type="text" name="customer_id" placeholder="Service ID" required>
-            <input type="number" name="unpaid_amount" placeholder="Amount Paid" required>
-            <button type="submit">Update Customer</button>
-        </form>
+      <h2>Confirm Service Execution</h2>
+      <form id="confirm-service-form">
+        <input
+          type="text"
+          name="service_id"
+          placeholder="Service ID"
+          required
+        />
+        <button type="submit">Confirm</button>
+      </form>
 
-        <h3>Unpaid Customers List</h3>
-        <ul id="unpaid-customers-list"></ul>
+      <h2>Follow Up with Customers for Unpaid Bills</h2>
+      <ul id="unpaid-bills-list"></ul>
 
-        <h2>Service Overview</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Customer Name</th>
-                    <th>Service Content</th>
-                    <th>Paid Amount</th>
-                    <th>Unpaid Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="service-overview-list">
-                <!-- service-overview-list -->
-            </tbody>
-        </table>
+      <h2>Add Unpaid Customers</h2>
+      <form id="unpaid-customer-form">
+        <input
+          type="text"
+          name="customer_id"
+          placeholder="Service ID"
+          required
+        />
+        <input
+          type="number"
+          name="unpaid_amount"
+          placeholder="Amount Paid"
+          required
+        />
+        <button type="submit">Update Customer</button>
+      </form>
+
+      <h3>Unpaid Customers List</h3>
+      <ul id="unpaid-customers-list"></ul>
+
+      <h2>Service Overview</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer Name</th>
+            <th>Service Content</th>
+            <th>Paid Amount</th>
+            <th>Unpaid Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="service-overview-list">
+          <!-- service-overview-list -->
+        </tbody>
+      </table>
     </div>
 
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const isAdmin = localStorage.getItem('isAdmin');
 
@@ -91,7 +152,6 @@
             }
 
         });
-    </script>
-    <script src="../JS/BusinessAdmin.js"></script>
-</body>
+    </script> -->
+  </body>
 </html>
