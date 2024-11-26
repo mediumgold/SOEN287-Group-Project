@@ -168,3 +168,46 @@ th, td {
     background-color: var(--light-green);
     transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
+
+/* Footer Bar Styling */
+.footer-bar {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--dark-blue);
+    color: var(--light-green);
+}
+
+.footer-bar p {
+    margin-bottom: 0.5rem;
+}
+
+.footer-bar .footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.footer-bar .footer-links li a {
+    color: var(--light-blue);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.footer-bar .footer-links li a:hover {
+    color: var(--light-green);
+}
+
+/* Responsive Footer Bar for Smaller Screens */
+@media (max-width: 768px) {
+    .footer-bar {
+        padding: 1rem;
+    }
+
+    .footer-bar .footer-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Account</title>
+    <link rel="stylesheet" href="../CSS/AccountEdit.css" />
+    <script src="../JS/AccountEdit.js" defer></script>
+    <script src="../JS/shared.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="company-nav-logo">
+        <a href="index.html"
+          ><img
+            id="logo"
+            src="../assets/company logo placeholder for a website.png"
+            alt="Company Logo"
+        /></a>
+        <h2 id="title">Company Name</h2>
+      </div>
+
+      <ul class="nav-links">
+        <li class="link"><a href="index.html">Home</a></li>
+        <li class="link"><a href="services.html">Services</a></li>
+        <li class="link"><a href="about.html">About</a></li>
+        <li class="link"><a href="contact.html">Contact</a></li>
+        <li class="link"><a href="account.html">Account</a></li>
+        <li class="link"><a href="cart.html">Cart</a></li>
+      </ul>
+
+      <!-- Add logout button -->
+      <button
+        id="logout-button"
+        class="btn"
+        onclick="window.location.href='index.html'"
+      >
+        Logout
+      </button>
+    </nav>
+
+    <!-- Account Edit Form -->
+    <div class="container">
+      <h2>Edit Account Information</h2>
+      <form id="account-edit-form">
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter new username"
+          required
+        />
+
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter new email"
+          required
+        />
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter new password"
+          required
+        />
+
+        <button type="submit">Update Account</button>
+      </form>
+
+      <!-- Link back to the account page -->
+      <p style="margin-top: 20px; text-align: center">
+        <a href="account.html">Back to Account</a>
+      </p>
+    </div>
+
+    <div class="footer-bar">
+        <p>&copy; 2024 Company Name. All rights reserved.</p>
+        <ul class="footer-links">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+      
+  </body>
+</html>
