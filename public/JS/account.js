@@ -34,9 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         }
 
-    } 
-    
-    else {
+    } else {
         loginStatus.style.display = '';
     }
 

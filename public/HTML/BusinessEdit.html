@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Items</title>
-    <link rel="stylesheet" href="../CSS/BusinessEdit.css">
+    <link rel="stylesheet" href="../CSS/BusinessEdit.css" />
     <script src="../JS/BusinessEdit.js" defer></script>
-</head>
-<body>
+    <script src="../JS/shared.js"></script>
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="company-nav-logo">
-            <a href="index.html"><img src="../assets/company logo placeholder for a website.png" alt="Company Logo"/></a>
-            <h2 id="title">Company Name</h2>
-        </div>
+      <div class="company-nav-logo">
+        <a href="index.html"
+          ><img
+            id="logo"
+            src="../assets/company logo placeholder for a website.png"
+            alt="Company Logo"
+        /></a>
+        <h2 id="title">Company Name</h2>
+      </div>
 
-        <ul class="nav-links">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="services.html">Services</a></li>
-            <li class="link"><a href="about.html">About</a></li>
-            <li class="link"><a href="contact.html">Contact</a></li>
-            <li class="link"><a href="account.html">Account</a></li>
-            <li class="link"><a href="cart.html">Cart</a></li>
-        </ul>
+      <ul class="nav-links">
+        <li class="link"><a href="index.html">Home</a></li>
+        <li class="link"><a href="services.html">Services</a></li>
+        <li class="link"><a href="about.html">About</a></li>
+        <li class="link"><a href="contact.html">Contact</a></li>
+        <li class="link"><a href="account.html">Account</a></li>
+        <li class="link"><a href="cart.html">Cart</a></li>
+      </ul>
 
       <!-- Add logout button -->
       <button id="logout-button" class="btn" onclick="window.location.href='index.html'">Logout</button>
@@ -30,27 +36,14 @@
 
     <h2>Edit Existing Items</h2>
     <form id="edit-form">
-<<<<<<< Updated upstream
-        <input type="number" name="item_id" placeholder="Item ID" required>
-        <input type="number" step="0.01" name="price" placeholder="New Price">
-        <textarea name="description" placeholder="New Description"></textarea>
-        <button type="submit">Edit Item</button>
-=======
       <input type="number" name="item_id" placeholder="Item ID" required />
       <input type="number" step="0.01" name="price" placeholder="New Price" />
       <textarea name="description" placeholder="New Description"></textarea>
       <button type="submit">Edit Item</button>
->>>>>>> Stashed changes
     </form>
 
     <h2>Add New Item</h2>
     <form id="add-form">
-<<<<<<< Updated upstream
-        <input type="text" name="name" placeholder="Item Name" required>
-        <input type="number" step="0.01" name="price" placeholder="Price" required>
-        <textarea name="description" placeholder="Description" required></textarea>
-        <button type="submit">Add Item</button>
-=======
       <input type="text" name="name" placeholder="Item Name" required />
       <input
         type="number"
@@ -65,54 +58,10 @@
         required
       ></textarea>
       <button type="submit">Add Item</button>
->>>>>>> Stashed changes
     </form>
 
     <h2>Delete Item</h2>
     <form id="delete-form">
-<<<<<<< Updated upstream
-        <input type="number" name="item_id" placeholder="Item ID" required>
-        <button type="submit">Delete Item</button>
-    </form>
-
-    <h2>Update Logo</h2>
-    <form id="update-logo-form" enctype="multipart/form-data">
-        <input type="number" name="item_id" placeholder="Item ID" required><br><br>
-        <input type="file" name="logo" accept="image/*" required><br><br>
-        <button type="submit">Update Logo</button>
-    </form>
-
-    <!-- Link to BusinessAdmin -->
-    <p style="margin-top: 20px; text-align: center;">
-        <a href="BusinessAdmin.html">Back to Business Admin</a>
-    </p>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const isAdmin = localStorage.getItem('isAdmin'); // Check if the user is an admin
-            const logoutButton = document.getElementById('logoutButton'); // Assume you have a logout button with id "logoutButton"
-        
-            // If the user is not an admin, redirect them to the login page
-            if (!isAdmin || isAdmin !== 'true') {
-                alert('Access denied. Admins only.');
-                window.location.href = 'login.html';  // Redirect to login page if not an admin
-            }
-        
-            // Handle logout
-            logoutButton.onclick = function () {
-                alert("Logging out...");
-        
-                // Clear login state
-                localStorage.removeItem('loggedIn');
-                localStorage.removeItem('userId');
-                localStorage.removeItem('isAdmin');  // Remove admin status if present
-        
-                // Redirect to index.html after logout
-                window.location.href = 'index.html';
-            };
-        });
-        </script>
-</body>
-=======
       <input type="number" name="item_id" placeholder="Item ID" required />
       <button type="submit">Delete Item</button>
     </form>
@@ -143,5 +92,4 @@
       <a href="BusinessAdmin.html">Back to Business Admin</a>
     </p>
   </body>
->>>>>>> Stashed changes
 </html>

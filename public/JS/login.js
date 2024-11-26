@@ -34,32 +34,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     if (adminLoginForm) {
-        adminLoginForm.addEventListener('submit', function (event) {
+        adminLoginForm.addEventListener('submit', function(event) {
             event.preventDefault();
-    
+        
             const email = document.getElementById('admin-email').value;
             const password = document.getElementById('admin-password').value;
-    
-            fetch('http://localhost:5500/admin-login', {
+        
+            fetch('http://localhost:5500/admin-login', {  
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email, password })
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Save admin login state in localStorage
-                        localStorage.setItem('loggedIn', true);
-                        localStorage.setItem('userId', data.userId);
-                        localStorage.setItem('isAdmin', true);
-                        window.location.href = data.redirectTo; // Redirect to the admin page
-                    } else {
-                        alert(data.message || 'Admin login failed.');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('loggedIn', true);
+                    localStorage.setItem('userId', data.ID);  
+                    localStorage.setItem('isAdmin', true);  
+                    window.location.href = data.redirectTo;  
+                } else {
+                    alert(data.message || 'Admin login failed.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
     }
     const isLoggedIn = localStorage.getItem('loggedIn');

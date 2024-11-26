@@ -429,7 +429,7 @@ app.post('/api/deleteOrder', (req, res) => {
     });
 });
 
-// order
+// POST API to add an order
 app.post('/api/addOrder', (req, res) => {
     const { user_id, total_price } = req.body;
 

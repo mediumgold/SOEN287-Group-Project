@@ -1,10 +1,3 @@
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
 
 :root {
     --light-green: #DFF2EB;
@@ -32,14 +25,16 @@ body {
 .company-nav-logo {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
 }
 
 .company-nav-logo img {
-    height: 50px;
+    height: 50px; 
     margin-bottom: 10px;
+    width: 100%;
+    padding:0%;
     border-radius: 50%;
-    transition: none; /* Removes highlight over image */
+    transition: none; /*Removes highlight over image*/
 }
 
 .company-nav-logo #title {
@@ -49,7 +44,7 @@ body {
 
 .nav-links {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -62,32 +57,37 @@ body {
 .navbar a {
     text-align: center;
     padding: 14px 20px;
-    text-decoration: none;
+    text-decoration: none; 
     font-size: 17px;
     font-weight: bold;
     transition: color 0.3s;
     color: var(--dark-blue);
 }
 
-.nav-links a:hover {
+.nav-links a:hover{
     color: var(--light-green);
 }
 
-.btn {
+.btn{
     background-color: var(--medium-blue);
     color: var(--dark-blue);
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px; 
     cursor: pointer;
     font-weight: bold;
     font-size: 17px;
     transition: background-color 0.3s;
 }
 
-.btn:hover {
+.btn a{
+    
+}
+
+.btn a:hover {
     color: var(--light-green);
 }
+
 
 /* Services Section */
 .services {

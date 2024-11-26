@@ -1,12 +1,12 @@
 /* CSS for Cart Page */
 
 /* Reset */
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-}
+} */
 
 :root {
     --light-green: #DFF2EB;
@@ -25,65 +25,77 @@ body {
 /* Navbar */
 .navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--medium-blue);
-    padding: 10px 20px;
-}
-
-.company-nav-logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.company-nav-logo img {
-    height: 50px;
-    margin-bottom: 10px;
-    border-radius: 50%;
-}
-
-.company-nav-logo #title {
-    margin: 0;
-    text-align: center;
-}
-
-.nav-links {
-    display: flex;
-    justify-content: space-between;
-    list-style-type: none;
-}
-
-.nav-links .link {
-    margin-right: 20px;
-}
-
-.navbar a {
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-    font-size: 17px;
-    font-weight: bold;
-    color: var(--dark-blue);
-}
-
-.nav-links a:hover {
-    color: var(--light-green);
-}
-
-.btn {
-    background-color: var(--medium-blue);
-    color: var(--dark-blue);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn:hover {
-    color: var(--light-green);
-}
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--medium-blue);
+      padding: 10px 20px;
+  }
+  
+  .company-nav-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+  }
+  
+  .company-nav-logo img {
+      height: 50px; 
+      margin-bottom: 10px;
+      width: 100%;
+      padding:0%;
+      border-radius: 50%;
+      transition: none; /*Removes highlight over image*/
+  }
+  
+  .company-nav-logo #title {
+      margin: 0;
+      text-align: center;
+  }
+  
+  .nav-links {
+      display: flex;
+      justify-content: space-between; 
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+  }
+  
+  .nav-links .link {
+      margin-right: 20px;
+  }
+  
+  .navbar a {
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none; 
+      font-size: 17px;
+      font-weight: bold;
+      transition: color 0.3s;
+      color: var(--dark-blue);
+  }
+  
+  .nav-links a:hover{
+      color: var(--light-green);
+  }
+  
+  .btn{
+      background-color: var(--medium-blue);
+      color: var(--dark-blue);
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px; 
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 17px;
+      transition: background-color 0.3s;
+  }
+  
+  .btn a{
+      
+  }
+  
+  .btn a:hover {
+      color: var(--light-green);
+  }
 
 /* Cart Section */
 .cart-section {
@@ -178,30 +190,101 @@ body {
 
 
 /* Footer */
-footer {
+.footer-container {
+    background-color: #7AB2D3;
+    padding: 20px;
+    color: var(--dark-blue);
+    text-align: center;
+}
+
+.footer-content {
+    justify-content: space-between;
+}
+
+.footer-content .footer-content-left, .footer-content .footer-content-right {
+    margin: 10px;
+}
+
+.footer-content-left img{
+    height: 10%; 
+    margin-bottom: 5px;
+    width: 10%;
+    padding:0%;
+    border-radius: 50%;
+    transition: none;
+}
+
+.footer-content-left p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.footer-social-links {
+    margin: 5%;
+    padding-top: 10px;
+    text-decoration: underline;
+ }
+ 
+.footer-social-links a {
+    color: var(--dark-blue);
+    text-decoration: none;
+    border-radius: 5px;
+    margin:10px;
+    justify-content: end;
+}
+
+.footer-social-links a:hover {
+    color: var(--dark-blue);
+    transition: all 0.3s ease;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.footer-col-help{
+    flex:1;
+    margin-top:5%;
+    align-items: center;
+}
+
+.footer-col-help a{
+    color: var(--dark-blue);
+    padding-bottom: 5%;
+}
+
+.footer-col-help a:hover{
+    color: var(--light-green);
+    transition: all 0.3s ease;
+}
+
+.footer-bar {
     text-align: center;
     padding: 1rem;
     background-color: var(--dark-blue);
     color: var(--light-green);
 }
 
-footer p {
+.footer-bar p {
     margin-bottom: 0.5rem;
 }
 
-.footer-links {
+.footer-bar .footer-links {
     list-style: none;
     display: flex;
     justify-content: center;
     gap: 1rem;
 }
 
-.footer-links a {
+.footer-bar .footer-links li a {
     color: var(--light-blue);
     text-decoration: none;
     font-size: 0.9rem;
+    transition: color 0.3s;
 }
 
-.footer-links a:hover {
+.footer-bar .footer-links li a:hover {
     color: var(--light-green);
 }
