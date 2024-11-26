@@ -562,6 +562,59 @@ app.get('/api/items', (req, res) => {
     });
 });
 
+app.put('/update-user-account', async (req, res) => {
+    try {
+        const { userId, username, email, password } = req.body;
+
+        if (!userId || !username || !email || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
+        }
+
+        const sql = `
+            UPDATE userLogin 
+            SET name = ?, email = ?, password = ? 
+            WHERE user_id = ?`;
+        const results = await db.query(sql, [username, email, password, userId]);
+
+        if (results.affectedRows > 0) {
+            res.json({ success: true, message: 'User account updated successfully.' });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found.' });
+        }
+    } catch (error) {
+        console.error('Error updating user account:', error);
+        res.status(500).json({ success: false, message: 'Database error occurred.' });
+    }
+});
+
+
+app.put('/update-admin-account', async (req, res) => {
+    try {
+        const { userId, username, email, password } = req.body;
+
+        if (!userId || !username || !email || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
+        }
+
+        const sql = `
+            UPDATE adminLogin 
+            SET name = ?, email = ?, password = ? 
+            WHERE id = ?`;
+        const results = await db.query(sql, [username, email, password, userId]);
+
+        if (results.affectedRows > 0) {
+            res.json({ success: true, message: 'Admin account updated successfully.' });
+        } else {
+            res.status(404).json({ success: false, message: 'Admin not found.' });
+        }
+    } catch (error) {
+        console.error('Error updating admin account:', error);
+        res.status(500).json({ success: false, message: 'Database error occurred.' });
+    }
+});
+
+
+
 app.use((req, res) => {
     res.status(404).json({ message: 'Endpoint not found' });
 });
