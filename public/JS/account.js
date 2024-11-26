@@ -36,8 +36,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     } else {
         loginStatus.style.display = '';
-    }
-
-    
-    
+    }  
 });
