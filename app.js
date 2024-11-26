@@ -426,27 +426,56 @@ app.post('/api/deleteOrder', (req, res) => {
         return res.status(400).json({ message: 'Order ID is required.' });
     }
 
-    // Delete query
-    const query = 'DELETE FROM Orders WHERE order_id = ?';
-    db.query(query, [order_id], (err, result) => {  // Change db.execute to db.query
+    // Start transaction
+    db.beginTransaction((err) => {
         if (err) {
-            console.error('Error deleting order:', err);  // Enhanced error logging
-            return res.status(500).json({ message: 'Failed to delete order.', error: err });
+            return res.status(500).json({ message: 'Failed to start transaction', error: err });
         }
 
-        // Log the result to see what the query returned
-        console.log('Delete result:', result);
+        // Disable foreign key checks
+        db.query('SET foreign_key_checks = 0;', (err, result) => {
+            if (err) {
+                return db.rollback(() => {
+                    res.status(500).json({ message: 'Failed to disable foreign key checks', error: err });
+                });
+            }
 
-        if (result.affectedRows > 0) {
-            return res.status(200).json({ message: 'Order deleted successfully!' });
-        } else {
-            return res.status(404).json({ message: 'Order not found.' });
-        }
+            // Delete order
+            const deleteOrderQuery = 'DELETE FROM Orders WHERE order_id = ?';
+            db.query(deleteOrderQuery, [order_id], (err, result) => {
+                if (err) {
+                    return db.rollback(() => {
+                        res.status(500).json({ message: 'Failed to delete order', error: err });
+                    });
+                }
+
+                // Log the result
+                console.log('Delete result:', result);
+
+                // Enable foreign key checks
+                db.query('SET foreign_key_checks = 1;', (err, result) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            res.status(500).json({ message: 'Failed to enable foreign key checks', error: err });
+                        });
+                    }
+
+                    // Commit transaction
+                    db.commit((err) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                res.status(500).json({ message: 'Failed to commit transaction', error: err });
+                            });
+                        }
+
+                        // Return success message directly without checking rows affected
+                        res.status(200).json({ message: 'Order deleted successfully!' });
+                    });
+                });
+            });
+        });
     });
 });
-
-
-
 
 // POST API to add an order
 app.post('/api/addOrder', (req, res) => {

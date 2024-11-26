@@ -87,6 +87,7 @@ document.getElementById('delete-order-form').addEventListener('submit', async fu
     // Gather form data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+    console.log('Form data:', data);  // Debug: check what data is being sent to backend
 
     try {
         // Send POST request to delete the order
@@ -109,6 +110,7 @@ document.getElementById('delete-order-form').addEventListener('submit', async fu
         alert('An error occurred while deleting the order.');
     }
 });
+
 
 
 
