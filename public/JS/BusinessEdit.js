@@ -1,18 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const isAdmin = localStorage.getItem('isAdmin');
 
-    //if (!isAdmin || isAdmin !== 'true') {
-    //    alert('Access denied. Admins only.');
-    //    window.location.href = 'login.html';  // Redirect to login page if not admin
-    //}
 
-    const logoutButton = document.getElementById('logout-btn');
-    logoutButton.addEventListener('click', function() {
-        localStorage.removeItem('isAdmin');
-        alert('You have been logged out.');
-        window.location.href = 'login.html'; // Redirect to login page
-    });
-});
 
 document.getElementById('edit-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -90,27 +77,61 @@ document.getElementById('update-logo-form').addEventListener('submit', async (e)
     }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const logoutButton = document.getElementById('logoutButton');
+//document.addEventListener('DOMContentLoaded', function () {
+//    const logoutButton = document.getElementById('logoutButton');
 
-    if (logoutButton) {
-        logoutButton.onclick = function () {
-            alert("Logging out...");
+//    if (logoutButton) {
+//        logoutButton.onclick = function () {
+//            alert("Logging out...");
 
-            // Clear login state from localStorage
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('isAdmin');  // Remove admin status if present
+// Clear login state from localStorage
+//            localStorage.removeItem('loggedIn');
+//            localStorage.removeItem('userId');
+//            localStorage.removeItem('isAdmin');  // Remove admin status if present
 
-            // Redirect to the home page (index.html)
-            window.location.href = 'index.html';  // Redirect to the home page
-        };
-    }
+// Redirect to the home page (index.html)
+//            window.location.href = 'index.html';  // Redirect to the home page
+//        };
+//    }
 
-    // Admin access check
-    const isAdmin = localStorage.getItem('isAdmin');
-    if (!isAdmin || isAdmin !== 'true') {
+// Admin access check
+//    const isAdmin = localStorage.getItem('isAdmin');
+//    if (!isAdmin || isAdmin !== 'true') {
+//        alert('Access denied. Admins only.');
+//       window.location.href = 'login.html';  // Redirect to login page if not an admin
+//    }
+//});
+
+//document.addEventListener('DOMContentLoaded', function() {
+//  const isAdmin = localStorage.getItem('isAdmin');
+
+//  if (!isAdmin || isAdmin !== 'true') {
+//    alert('Access denied. Admins only.');
+//    window.location.href = 'login.html';  // Redirect to login page if not admin
+//}
+
+//const logoutButton = document.getElementById('logout-btn');
+//logoutButton.addEventListener('click', function() {
+//    localStorage.removeItem('isAdmin');
+//    alert('You have been logged out.');
+//    window.location.href = 'login.html'; // Redirect to login page
+//});
+//});
+
+const logoutButton = document.getElementById('logout-button');
+const isAdmin = localStorage.getItem('isAdmin');
+   if (!isAdmin || isAdmin !== 'true') {
         alert('Access denied. Admins only.');
-        window.location.href = 'login.html';  // Redirect to login page if not an admin
+       window.location.href = 'login.html';  // Redirect to login page if not an admin
     }
-});
+logoutButton.onclick = function () {
+    alert("Logging out...");
+    
+    // Clear login state from localStorage
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');  // Remove admin status if present
+
+    // Redirect to the home page (index.html)
+    window.location.href = 'index.html';
+};

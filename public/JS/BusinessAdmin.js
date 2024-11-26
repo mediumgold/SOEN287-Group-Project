@@ -1,14 +1,16 @@
-const serviceForm = document.getElementById('service-form');
-const confirmServiceForm = document.getElementById('confirm-service-form');
-const unpaidBillForm = document.getElementById('unpaid-customer-form');
-const serviceList = document.getElementById('service-list');
-const unpaidBillsList = document.getElementById('unpaid-bills-list');  
-const serviceOverviewList = document.getElementById('service-overview-list');
-const logoutButton = document.getElementById('logout-button');
+//const serviceForm = document.getElementById('service-form');
+//const confirmServiceForm = document.getElementById('confirm-service-form');
+//const unpaidBillForm = document.getElementById('unpaid-customer-form');
+//const serviceList = document.getElementById('service-list');
+//const unpaidBillsList = document.getElementById('unpaid-bills-list');  
+//const serviceOverviewList = document.getElementById('service-overview-list');
+//const services = [];
+//const serviceOverview = [];
+//const unpaidCustomers = []; 
+// admin.js
 
-const services = [];
-const serviceOverview = [];
-const unpaidCustomers = [];  
+
+
 document.addEventListener('DOMContentLoaded', function () {
     fetchOrders();
 
@@ -237,7 +239,12 @@ async function handleRemoveOrder(event) {
     }
 }
 
-
+const logoutButton = document.getElementById('logout-button');
+const isAdmin = localStorage.getItem('isAdmin');
+   if (!isAdmin || isAdmin !== 'true') {
+        alert('Access denied. Admins only.');
+       window.location.href = 'login.html';  // Redirect to login page if not an admin
+    }
 logoutButton.onclick = function () {
     alert("Logging out...");
     
@@ -249,12 +256,3 @@ logoutButton.onclick = function () {
     // Redirect to the home page (index.html)
     window.location.href = 'index.html';
 };
-
-//document.addEventListener('DOMContentLoaded', function() {
-//    const isAdmin = localStorage.getItem('isAdmin');
-//
-//    if (!isAdmin || isAdmin !== 'true') {
-//        alert('Access denied. Admins only.');
-//        window.location.href = 'login.html';  // Redirect to login page if not admin
-//    }
-//});
