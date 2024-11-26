@@ -30,66 +30,73 @@
       </ul>
 
       <!-- Add logout button -->
-      <button id="logout-button" class="btn" onclick="window.location.href='index.html'">Logout</button>
+      <button
+        id="logout-button"
+        class="btn"
+        onclick="window.location.href='index.html'"
+      >
+        Logout
+      </button>
     </nav>
     <!-- Logout Button -->
-
-    <h2>Edit Existing Items</h2>
-    <form id="edit-form">
-      <input type="number" name="item_id" placeholder="Item ID" required />
-      <input type="number" step="0.01" name="price" placeholder="New Price" />
-      <textarea name="description" placeholder="New Description"></textarea>
-      <button type="submit">Edit Item</button>
-    </form>
-
-    <h2>Add New Item</h2>
-    <form id="add-form">
-      <input type="text" name="name" placeholder="Item Name" required />
-      <input
-        type="number"
-        step="0.01"
-        name="price"
-        placeholder="Price"
-        required
-      />
-      <textarea
-        name="description"
-        placeholder="Description"
-        required
-      ></textarea>
-      <button type="submit">Add Item</button>
-    </form>
-
-    <h2>Delete Item</h2>
-    <form id="delete-form">
-      <input type="number" name="item_id" placeholder="Item ID" required />
-      <button type="submit">Delete Item</button>
-    </form>
-
-    <h2>Edit Business Information</h2>
-      <p>Business Name: <span id="business-name">Your Business Name</span>
-        <form action="" method="POST">
-            <label for="nameInput">Change Name:</label>
-            <input type="text" id="nameInput" placeholder="Enter new company name">
-            <button type="button" id="updateNameBtn">Update Name</button>
-        </form>
-      </p>
-      <p>Logo: <span id="business-logo"></span></p>
-      <form action="" method="POST">
-        <label for="logoInput">Edit the logo:</label>
-        <input type="file" id="logoInput" accept="image/*" />
+    <div class="container">
+      <h2>Edit Existing Items</h2>
+      <form id="edit-form">
+        <input type="number" name="item_id" placeholder="Item ID" required />
+        <input type="number" step="0.01" name="price" placeholder="New Price" />
+        <textarea name="description" placeholder="New Description"></textarea>
+        <button type="submit">Edit Item</button>
       </form>
-      <p>Address: <span id="business-address">Your Address</span>
+  
+      <h2>Add New Item</h2>
+      <form id="add-form">
+        <input type="text" name="name" placeholder="Item Name" required />
+        <input
+          type="number"
+          step="0.01"
+          name="price"
+          placeholder="Price"
+          required
+        />
+        <textarea
+          name="description"
+          placeholder="Description"
+          required
+        ></textarea>
+        <button type="submit">Add Item</button>
+      </form>
+  
+      <h2>Delete Item</h2>
+      <form id="delete-form">
+        <input type="number" name="item_id" placeholder="Item ID" required />
+        <button type="submit">Delete Item</button>
+      </form>
+  
+      <h2>Edit Business Information</h2>
+        <p>Business Name: <span id="business-name">Your Business Name</span>
+          <form action="" method="POST">
+              <label for="nameInput">Change Name:</label>
+              <input type="text" id="nameInput" placeholder="Enter new company name">
+              <button type="button" id="updateNameBtn">Update Name</button>
+          </form>
+        </p>
+        <p>Logo: <span id="business-logo"></span></p>
         <form action="" method="POST">
-            <label for="addressInput">Change Address:</label>
-            <input type="text" id="addressInput" placeholder="Enter new address">
-            <button type="button" id="updateAddressBtn">Update Address</button>
+          <label for="logoInput">Edit the logo:</label>
+          <input type="file" id="logoInput" accept="image/*" />
         </form>
+        <p>Address: <span id="business-address">Your Address</span>
+          <form action="" method="POST">
+              <label for="addressInput">Change Address:</label>
+              <input type="text" id="addressInput" placeholder="Enter new address">
+              <button type="button" id="updateAddressBtn">Update Address</button>
+          </form>
+        </p>
+  
+      <!-- Link to BusinessAdmin -->
+      <p style="margin-top: 20px; text-align: center">
+        <a href="BusinessAdmin.html">Back to Business Admin</a>
       </p>
-
-    <!-- Link to BusinessAdmin -->
-    <p style="margin-top: 20px; text-align: center">
-      <a href="BusinessAdmin.html">Back to Business Admin</a>
-    </p>
+    </div>
   </body>
 </html>
