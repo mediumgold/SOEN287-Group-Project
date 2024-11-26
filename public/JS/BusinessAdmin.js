@@ -92,6 +92,7 @@ document
     // Gather form data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+    console.log('Form data:', data);  // Debug: check what data is being sent to backend
 
     try {
       // Send POST request to delete the order
@@ -115,9 +116,7 @@ document
     }
   });
 
-document
-  .getElementById("add-order-form")
-  .addEventListener("submit", async (e) => {
+document.getElementById('add-order-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Gather form data
@@ -252,6 +251,7 @@ logoutButton.onclick = function () {
 
 //Logout button
 logoutButton.onclick = function () {
+
   alert("Logging out...");
   
   // Clear login state from localStorage
@@ -263,11 +263,3 @@ logoutButton.onclick = function () {
   window.location.href = 'index.html';
 };
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   const isAdmin = localStorage.getItem("isAdmin");
-
-//   if (!isAdmin || isAdmin !== "true") {
-//     alert("Access denied. Admins only.");
-//     window.location.href = "login.html"; // Redirect to login page if not admin
-//   }
-// });

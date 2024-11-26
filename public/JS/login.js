@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     localStorage.setItem('loggedIn', true);
-                    localStorage.setItem('AdminId', data.ID);  
+                    localStorage.setItem('userId', data.ID);  
                     localStorage.setItem('isAdmin', true);  
                     window.location.href = data.redirectTo;  
                 } else {
