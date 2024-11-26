@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (adminLoginForm) {
         adminLoginForm.addEventListener('submit', function(event) {
             event.preventDefault();
-        
+            
+
             const email = document.getElementById('admin-email').value;
             const password = document.getElementById('admin-password').value;
         
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     localStorage.setItem('loggedIn', true);
-                    localStorage.setItem('userId', data.ID);  
+                    localStorage.setItem('userId', data.userId);  
                     localStorage.setItem('isAdmin', true);  
                     window.location.href = data.redirectTo;  
                 } else {
