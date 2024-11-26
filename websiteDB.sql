@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS Orders (
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES userLogin(user_id)
 );
+ALTER TABLE Orders
+ADD COLUMN IF NOT EXISTS payment_status INT DEFAULT 0;
 
 -- Create Order_Items table to store the items in each order
 CREATE TABLE IF NOT EXISTS Order_Items (

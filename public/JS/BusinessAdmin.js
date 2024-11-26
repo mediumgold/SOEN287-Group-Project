@@ -44,119 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//change company name
-document.addEventListener("DOMContentLoaded", () => {
-  const nameInput = document.getElementById("nameInput");
-  const updateNameBtn = document.getElementById("updateNameBtn");
-  const businessNameSpan = document.getElementById("business-name");
 
-  // Load the current name from localStorage if it exists
-  const savedName = localStorage.getItem("companyName");
-  if (savedName) {
-    businessNameSpan.textContent = savedName;
-    const titleElement = document.getElementById("title");
-    if (titleElement) {
-      titleElement.textContent = savedName;
-    }
-  }
-
-  // Update name on button click
-  updateNameBtn.addEventListener("click", () => {
-    const newName = nameInput.value.trim();
-    if (newName) {
-      // Save the new name to localStorage
-      localStorage.setItem("companyName", newName);
-
-      // Update the displayed name
-      businessNameSpan.textContent = newName;
-
-      // Update the navbar title in the same page
-      const titleElement = document.getElementById("title");
-      if (titleElement) {
-        titleElement.textContent = newName;
-      }
-    } else {
-      alert("Please enter a valid name.");
-    }
-  });
-});
-
-//change company logo
-document.addEventListener("DOMContentLoaded", () => {
-  const logoInput = document.getElementById("logoInput"); // File input
-  const navLogo = document.getElementById("logo"); // Navbar logo image
-
-  // Load the logo from localStorage if it exists
-  const savedLogo = localStorage.getItem("companyLogo");
-  if (savedLogo) {
-    navLogo.src = savedLogo;
-  }
-
-  logoInput?.addEventListener("change", (event) => {
-    const file = event.target.files[0]; // Get the selected file
-
-    if (!file) {
-      alert("No file selected. Please choose an image.");
-      return;
-    }
-
-    // Validate file type
-    const validTypes = ["image/png", "image/jpeg"];
-    if (!validTypes.includes(file.type)) {
-      alert("Invalid file type. Please upload a PNG or JPEG image.");
-      logoInput.value = ""; // Reset the file input
-      return;
-    }
-
-    // Optional: Validate file size (e.g., max 2MB)
-    const maxSize = 2 * 1024 * 1024; // 2MB
-    if (file.size > maxSize) {
-      alert("File is too large. Please upload an image smaller than 2MB.");
-      logoInput.value = ""; // Reset the file input
-      return;
-    }
-
-    // Preview the selected image
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const logoURL = e.target.result;
-      navLogo.src = logoURL; // Update the navbar logo
-      localStorage.setItem("companyLogo", logoURL); // Save the logo URL to localStorage
-    };
-    reader.readAsDataURL(file); // Read the file as a DataURL
-  });
-});
-
-//change company address
-document.addEventListener("DOMContentLoaded", () => {
-  const addressInput = document.getElementById("addressInput");
-  const updateAddressBtn = document.getElementById("updateAddressBtn");
-  const businessAddressSpan = document.getElementById("business-address");
-
-  // Load the current address from localStorage if it exists
-  const savedAddress = localStorage.getItem("businessAddress");
-  if (savedAddress) {
-    businessAddressSpan.textContent = savedAddress;
-  }
-
-  // Update the address on button click
-  updateAddressBtn.addEventListener("click", () => {
-    const newAddress = addressInput.value.trim();
-    if (newAddress) {
-      // Save the new address to localStorage
-      localStorage.setItem("businessAddress", newAddress);
-
-      // Update the displayed address
-      businessAddressSpan.textContent = newAddress;
-    } else {
-      alert("Please enter a valid address.");
-    }
-  });
-});
-
-document
-  .getElementById("order-form")
-  .addEventListener("submit", async function (e) {
+document.getElementById("order-form").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
@@ -361,11 +250,24 @@ logoutButton.onclick = function () {
   window.location.href = "login.html"; // Redirect to login page
 };
 
-document.addEventListener("DOMContentLoaded", function () {
-  const isAdmin = localStorage.getItem("isAdmin");
+//Logout button
+logoutButton.onclick = function () {
+  alert("Logging out...");
+  
+  // Clear login state from localStorage
+  localStorage.removeItem('loggedIn');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('isAdmin');  // Remove admin status if present
 
-  if (!isAdmin || isAdmin !== "true") {
-    alert("Access denied. Admins only.");
-    window.location.href = "login.html"; // Redirect to login page if not admin
-  }
-});
+  // Redirect to the home page (index.html)
+  window.location.href = 'index.html';
+};
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const isAdmin = localStorage.getItem("isAdmin");
+
+//   if (!isAdmin || isAdmin !== "true") {
+//     alert("Access denied. Admins only.");
+//     window.location.href = "login.html"; // Redirect to login page if not admin
+//   }
+// });

@@ -101,27 +101,61 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Database error' });
     }
 });
+
 // Admin login
 app.post('/admin-login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const sql = 'SELECT id FROM adminLogin WHERE email = ? AND password = ?';
-        const results = await db.query(sql, [email, password]);
 
-        if (results.length > 0) {
-            res.json({
-                success: true,
-                userId: results[0].id,  
-                redirectTo: 'BusinessAdmin.html',  
+        // Ensure email and password are provided
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email and password are required'
             });
-        } else {
-            res.json({ success: false, message: 'Invalid email or password' });
         }
+
+        // SQL query to check admin login with plain password
+        const sql = 'SELECT id, password FROM adminLogin WHERE email = ?';
+        
+        // Querying the database
+        db.query(sql, [email], (err, results) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
+                });
+            }
+
+            // If the user exists
+            if (results.length > 0) {
+                const storedPassword = results[0].password;
+
+                // Directly compare the plain text password
+                if (storedPassword === password) {
+                    return res.json({
+                        success: true,
+                        userId: results[0].id,
+                        redirectTo: 'BusinessAdmin.html'
+                    });
+                }
+            }
+
+            // If no match is found or email/password incorrect
+            res.json({ success: false, message: 'Invalid email or password' });
+        });
+
     } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ message: 'Database error' });
+        console.error('Error logging in:', error.message);
+        res.status(500).json({
+            success: false,
+            message: 'Database error occurred'
+        });
     }
 });
+
+
 // Add item to cart
 app.post('/cart', async (req, res) => {
     const { userId, itemId, quantity } = req.body;
@@ -266,98 +300,6 @@ app.get('/api/orders', (req, res) => {
     });
 });
 
-app.post('/api/neworders', (req, res) => {
-    const { user_id, total_price } = req.body;  
-
-    const query = 'INSERT INTO Orders (user_id, total_price) VALUES (?, ?)';
-    
-
-    db.query(query, [user_id, total_price], (error, results) => {
-        if (error) {
-            console.error('Error inserting order:', error);
-            return res.status(500).send('Failed to add order');
-        }
-        
-        res.status(201).json({ message: 'Order added successfully', order_id: results.insertId });
-    });
-});
-
-app.post('/api/services', (req, res) => {
-    const { order_id, user_id, name, service_content, total_price, paid, unpaid } = req.body;
-
-    const query = `
-        INSERT INTO AdminServices (order_id, user_id, name, service_content, total_price, paid, unpaid)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-    
-    db.query(query, [order_id, user_id, name, service_content, total_price, paid, unpaid], (error, results) => {
-        if (error) {
-            console.error('Error inserting service:', error);
-            return res.status(500).send('Failed to add service.');
-        }
-        res.status(200).json({ message: 'Service added successfully.' });
-    });
-});
-
-
-app.get('/api/services', (req, res) => {
-    const query = 'SELECT * FROM services';
-    db.query(query, (err, results) => {
-        if (err) {
-            console.error('Error fetching services:', err);
-            res.status(500).send('Error fetching services');
-        } else {
-            res.json(results);  
-        }
-    });
-});
-
-app.put('/api/services/:orderId', (req, res) => {
-    const { orderId } = req.params;
-    const { user_id, name, service_content, total_price, paid, unpaid } = req.body;
-
-    const query = `
-        UPDATE AdminServices
-        SET user_id = ?, name = ?, service_content = ?, total_price = ?, paid = ?, unpaid = ?
-        WHERE order_id = ?
-    `;
-
-    db.query(query, [user_id, name, service_content, total_price, paid, unpaid, orderId], (error, results) => {
-        if (error) {
-            console.error('Error updating service:', error);
-            return res.status(500).send('Failed to update service.');
-        }
-
-        if (results.affectedRows > 0) {
-            res.status(200).json({ message: 'Service updated successfully.' });
-        } else {
-            res.status(404).send('Order ID not found.');
-        }
-    });
-});
-
-app.get('/api/unpaid', (req, res) => {
-    const query = `
-        SELECT user_id, name, unpaid
-        FROM AdminServices
-        WHERE unpaid > 0
-    `;
-    
-    db.query(query, (error, results) => {
-        if (error) {
-            console.error('Error fetching unpaid bills:', error);
-            return res.status(500).send('Failed to fetch unpaid bills.');
-        }
-        res.status(200).json(results);
-    });
-});
-
-//const { migrateData } = require('../JS/BusinessAdmin.js');
-
-//app.get('/migrate-data', (req, res) => {
-//    migrateData();  
- //   res.send('Data migration started...');
-//});
 app.post('/api/updateOrderPrice', (req, res) => {
     const { order_id, total_price } = req.body;
 
@@ -394,22 +336,54 @@ app.post('/api/deleteOrder', (req, res) => {
         return res.status(400).json({ message: 'Order ID is required.' });
     }
 
-    // Delete query
-    const query = 'DELETE FROM Orders WHERE order_id = ?';
-    db.query(query, [order_id], (err, result) => {  // Change db.execute to db.query
+    // Start transaction
+    db.beginTransaction((err) => {
         if (err) {
-            console.error('Error deleting order:', err);  // Enhanced error logging
-            return res.status(500).json({ message: 'Failed to delete order.', error: err });
+            return res.status(500).json({ message: 'Failed to start transaction', error: err });
         }
 
-        // Log the result to see what the query returned
-        console.log('Delete result:', result);
+        // Disable foreign key checks
+        db.query('SET foreign_key_checks = 0;', (err, result) => {
+            if (err) {
+                return db.rollback(() => {
+                    res.status(500).json({ message: 'Failed to disable foreign key checks', error: err });
+                });
+            }
 
-        if (result.affectedRows > 0) {
-            return res.status(200).json({ message: 'Order deleted successfully!' });
-        } else {
-            return res.status(404).json({ message: 'Order not found.' });
-        }
+            // Delete order
+            const deleteOrderQuery = 'DELETE FROM Orders WHERE order_id = ?';
+            db.query(deleteOrderQuery, [order_id], (err, result) => {
+                if (err) {
+                    return db.rollback(() => {
+                        res.status(500).json({ message: 'Failed to delete order', error: err });
+                    });
+                }
+
+                // Log the result
+                console.log('Delete result:', result);
+
+                // Enable foreign key checks
+                db.query('SET foreign_key_checks = 1;', (err, result) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            res.status(500).json({ message: 'Failed to enable foreign key checks', error: err });
+                        });
+                    }
+
+                    // Commit transaction
+                    db.commit((err) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                res.status(500).json({ message: 'Failed to commit transaction', error: err });
+                            });
+                        }
+
+                        // Return success message directly without checking rows affected
+                        res.status(200).json({ message: 'Order deleted successfully!' });
+                    });
+                });
+            });
+        });
     });
 });
 
