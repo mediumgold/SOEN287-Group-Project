@@ -1,86 +1,98 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-            const serviceId = button.getAttribute('data-service-id');
-            
-            // Retrieve userId from local storage (assuming it's stored after login)
-            const userId = localStorage.getItem('userId');
+document.addEventListener('DOMContentLoaded', async () => {
+    const serviceCardsContainer = document.querySelector('.service-cards');
 
-            if (!userId) {
-                alert('You need to log in to add items to your cart.');
-                window.location.href = 'login.html'; // Redirect to login page
-                return;
-            }
+    // Fetch service items
+    try {
+        const response = await fetch('http://localhost:5500/api/items');
+        if (!response.ok) {
+            throw new Error('Failed to fetch service items');
+        }
 
-            // Create the request payload
-            const payload = {
-                userId: parseInt(userId), // Ensure userId is an integer
-                itemId: parseInt(serviceId), // Ensure itemId matches the database schema
-                quantity: 1 // Default quantity for now
-            };
+        const services = await response.json();
 
-            try {
-                // Send POST request to the /cart endpoint
-                const response = await fetch('http://localhost:5500/cart', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+        // Dynamically create service cards
+        services.forEach(service => {
+            const card = document.createElement('div');
+            card.classList.add('service-card');
 
-                const data = await response.json();
+            card.innerHTML = `
+                <img src="${service.image_url || '../assets/service1-placeholder.png'}" alt="${service.name}" />
+                <h2>${service.name}</h2>
+                <p>${service.description}</p>
+                <p>Price: $${service.price.toFixed(2)}</p>
+                <button class="btn add-to-cart" data-service-id="${service.item_id}">
+                    Add to Cart
+                </button>
+            `;
 
-                if (response.ok && data.message === 'Item added to cart') {
-                    alert(`Service ${serviceId} added to your cart!`);
-                } else {
-                    alert('Failed to add to cart. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error adding to cart:', error);
-                alert('An error occurred while adding to your cart. Please try again later.');
-            }
+            serviceCardsContainer.appendChild(card);
         });
-    });
 
+        // Add to cart button event listener
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', async () => {
+                const serviceId = button.getAttribute('data-service-id');
+                const userId = localStorage.getItem('userId');
+
+                if (!userId) {
+                    alert('You need to log in to add items to your cart.');
+                    window.location.href = 'login.html'; 
+                    return;
+                }
+
+                const payload = {
+                    userId: parseInt(userId),
+                    itemId: parseInt(serviceId),
+                    quantity: 1
+                };
+
+                try {
+                    const cartResponse = await fetch('http://localhost:5500/cart', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await cartResponse.json();
+                    if (cartResponse.ok && data.message === 'Item added to cart') {
+                        alert(`Service ${serviceId} added to your cart!`);
+                    } else {
+                        alert('Failed to add to cart. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                    alert('An error occurred. Please try again later.');
+                }
+            });
+        });
+
+    } catch (error) {
+        console.error('Error fetching services:', error);
+        alert('An error occurred while fetching services. Please try again later.');
+    }
+
+    // Login status management
     const isLoggedIn = localStorage.getItem('loggedIn');
-    const hasUserID = localStorage.getItem('userId')
+    const hasUserID = localStorage.getItem('userId');
     const loginStatus = document.getElementById('loginStatus');
     const signInDiv = document.getElementById('signInDiv');
-
-    //The two buttons to the right of the nav bar. sign in and create acc
     const btn1 = document.getElementById('signIn');
     const btn2 = document.getElementById('createAcc');
 
-    //current userID
-    const userId = localStorage.getItem('userId');
-
-    //test comment
     if (isLoggedIn) {
-        //once logged in, we will change the contents and href of btn 1 (sign in) to lead to account
         btn1.querySelector('a').innerText = 'Account';
-        btn1.querySelector('a').href = '../HTML/account.html';
+        btn1.querySelector('a').href = 'account.html';
 
-        //once logged in, we will change the contents and href of btn2 (create account) to log out and index.html
         btn2.querySelector('a').innerText = 'Logout';
+        btn2.querySelector('a').href = '#';
 
-        // we want to prevent it from going right away, (only want it onclick)
-        btn2.querySelector('a').href = '#'; 
-        
-        //onclick, logout and go to home page
-        btn2.onclick = function(){
-            //clear login status
+        btn2.onclick = function () {
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('userId');
-            
-            //bring back to home page
-            window.location.href = '../HTML/index.html';
-
-        }
+            window.location.href = 'index.html';
+        };
 
     } else {
         loginStatus.style.display = '';
     }
-
-
 });

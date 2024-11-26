@@ -1,40 +1,34 @@
-document.addEventListener('DOMContentLoaded', function() {
-
+document.addEventListener('DOMContentLoaded', function () {
     const userForm = document.getElementById('userForm');
 
     if (userForm) {
-        userForm.addEventListener('submit', function(event) {
+        userForm.addEventListener('submit', function (event) {
             event.preventDefault();
-        
+
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-        
+
             fetch('http://localhost:5500/submit', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email, password }) // Send values directly
+                body: JSON.stringify({ name, email, password }),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Store login status in localStorage
-                    localStorage.setItem('loggedIn', true);
-
-                    //Store userID
-                    localStorage.setItem('userId', data.userId);
-                    
-                    // Redirect to the home page
-                    window.location.href = data.redirectTo;
-                } else {
-                    console.error('Error creating account:', data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert('Registration successful! Redirecting to homepage.');
+                        window.location.href = data.redirectTo;
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => console.error('Error:', error));
         });
     }
+
 
     const isLoggedIn = localStorage.getItem('loggedIn');
     const hasUserID = localStorage.getItem('userId')
