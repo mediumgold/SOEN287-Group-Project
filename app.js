@@ -101,6 +101,7 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Database error' });
     }
 });
+
 // Admin login
 app.post('/admin-login', async (req, res) => {
     try {
@@ -153,6 +154,7 @@ app.post('/admin-login', async (req, res) => {
         });
     }
 });
+
 
 // Add item to cart
 app.post('/cart', async (req, res) => {
@@ -385,11 +387,14 @@ app.post('/api/deleteOrder', (req, res) => {
     });
 });
 
+
+
+
 // POST API to add an order
 app.post('/api/addOrder', (req, res) => {
     const { user_id, total_price } = req.body;
 
-    console.log('Received data:', req.body);  
+    console.log('Received data:', req.body);  // 打印接收到的数据，检查是否包含正确字段
 
     if (!user_id || !total_price) {
         return res.status(400).json({ message: 'User ID and Total Price are required.' });
@@ -435,7 +440,7 @@ app.post('/api/markAsPending', (req, res) => {
     });
 });
 
-
+// 获取所有 pending 订单
 app.get('/api/getPendingOrders', (req, res) => {
     const query = 'SELECT * FROM Orders WHERE payment_status = 0';  // 0 means pending
     db.query(query, (err, result) => {
@@ -447,7 +452,7 @@ app.get('/api/getPendingOrders', (req, res) => {
     });
 });
 
-
+// 更新订单为已支付
 app.put('/api/removeOrder/:orderId', (req, res) => {
     const orderId = req.params.orderId;
 
