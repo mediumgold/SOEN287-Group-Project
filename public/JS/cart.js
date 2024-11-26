@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //clear login status
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('userId');
+            localStorage.removeItem('isAdmin');
             
             //bring back to home page
             window.location.href = '../HTML/index.html';

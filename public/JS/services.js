@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         btn2.onclick = function () {
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('userId');
+            localStorage.removeItem('isAdmin');
             window.location.href = 'index.html';
         };
 
