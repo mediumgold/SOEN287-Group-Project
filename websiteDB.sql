@@ -5,7 +5,7 @@ USE websiteDB; -- <- database being used
 CREATE TABLE IF NOT EXISTS userLogin (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS userLogin (
 CREATE TABLE IF NOT EXISTS adminLogin (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 

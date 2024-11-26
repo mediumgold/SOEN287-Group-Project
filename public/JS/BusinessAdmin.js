@@ -249,6 +249,7 @@ logoutButton.onclick = function () {
     // Redirect to the home page (index.html)
     window.location.href = 'index.html';
 };
+
 //document.addEventListener('DOMContentLoaded', function() {
 //    const isAdmin = localStorage.getItem('isAdmin');
 //
