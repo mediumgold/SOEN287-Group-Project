@@ -63,21 +63,65 @@ db.connect(async (err) => {
 // Routes
 
 // User registration
-app.post('/submit', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-        const sql = 'INSERT INTO userLogin (name, email, password) VALUES (?, ?, ?)';
-        const result = await db.query(sql, [name, email, password]);
-        res.json({
-            success: true,
-            userId: result.insertId,
-            message: 'Account created successfully',
-            redirectTo: 'index.html',
+app.post('/submit', (req, res) => {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+        return res.status(400).json({
+            success: false,
+            message: 'All fields are required.',
         });
-    } catch (error) {
-        console.error('Error submitting data:', error);
-        res.status(500).json({ message: 'Database error' });
     }
+
+    // Check if the email exists in either userLogin or adminLogin
+    const checkEmailSqlUser = 'SELECT email FROM userLogin WHERE email = ?';
+    const checkEmailSqlAdmin = 'SELECT email FROM adminLogin WHERE email = ?';
+
+    // Check in userLogin table
+    db.query(checkEmailSqlUser, [email], (err, userResults) => {
+        if (err) {
+            console.error('Error checking userLogin email:', err);
+            return res.status(500).json({ message: 'Database error.' });
+        }
+
+        if (userResults.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'This email is already registered in the user database.',
+            });
+        }
+
+        // Check in adminLogin table
+        db.query(checkEmailSqlAdmin, [email], (err, adminResults) => {
+            if (err) {
+                console.error('Error checking adminLogin email:', err);
+                return res.status(500).json({ message: 'Database error.' });
+            }
+
+            if (adminResults.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'This email is already registered in the admin database.',
+                });
+            }
+
+            // If no conflict, insert new user
+            const insertSql = 'INSERT INTO userLogin (name, email, password) VALUES (?, ?, ?)';
+            db.query(insertSql, [name, email, password], (err, result) => {
+                if (err) {
+                    console.error('Error inserting data:', err);
+                    return res.status(500).json({ message: 'Database error.' });
+                }
+
+                res.json({
+                    success: true,
+                    userId: result.insertId,
+                    message: 'Account created successfully.',
+                    redirectTo: 'index.html',
+                });
+            });
+        });
+    });
 });
 
 // User login
@@ -503,6 +547,18 @@ app.post('/api/deleteItem', (req, res) => {
     db.query(sql, [item_id], (err, result) => {
         if (err) return res.status(500).send(err.message);
         res.send(result.affectedRows > 0 ? 'Item deleted successfully!' : 'Item not found.');
+    });
+});
+
+app.get('/api/items', (req, res) => {
+    const query = 'SELECT * FROM Items';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching items:', err);
+            return res.status(500).json({ message: 'Failed to fetch items' });
+        }
+
+        res.json(results);
     });
 });
 
