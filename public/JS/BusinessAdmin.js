@@ -87,6 +87,7 @@ document.getElementById('delete-order-form').addEventListener('submit', async fu
     // Gather form data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+    console.log('Form data:', data);  // Debug: check what data is being sent to backend
 
     try {
         // Send POST request to delete the order
@@ -109,6 +110,7 @@ document.getElementById('delete-order-form').addEventListener('submit', async fu
         alert('An error occurred while deleting the order.');
     }
 });
+
 
 
 
@@ -238,14 +240,21 @@ async function handleRemoveOrder(event) {
 
 logoutButton.onclick = function () {
     alert("Logging out...");
-    window.location.href = 'login.html'; // Redirect to login page
+    
+    // Clear login state from localStorage
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');  // Remove admin status if present
+
+    // Redirect to the home page (index.html)
+    window.location.href = 'index.html';
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    const isAdmin = localStorage.getItem('isAdmin');
-
-    if (!isAdmin || isAdmin !== 'true') {
-        alert('Access denied. Admins only.');
-        window.location.href = 'login.html';  // Redirect to login page if not admin
-    }
-});
+//document.addEventListener('DOMContentLoaded', function() {
+//    const isAdmin = localStorage.getItem('isAdmin');
+//
+//    if (!isAdmin || isAdmin !== 'true') {
+//        alert('Access denied. Admins only.');
+//        window.location.href = 'login.html';  // Redirect to login page if not admin
+//    }
+//});

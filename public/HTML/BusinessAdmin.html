@@ -3,101 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../CSS/BusinessAdmin.css">
-    <script src="../JS/BusinessAdmin.js"></script>
+    <title>Admin Dashboard</title>
 </head>
 <body>
     <nav class="navbar">
         <div class="company-nav-logo">
-            <a href="index.html"><img src="../assets/company logo placeholder for a website.png"/></a>
+            <a href="index.html"><img src="../assets/company logo placeholder for a website.png" alt="Company Logo"/></a>
             <h2 id="title">Company Name</h2>
         </div>
-  
+
         <ul class="nav-links">
-          <li class="link"><a href="index.html">Home</a></li>
-          <li class="link"><a href="services.html">Services</a></li>
-          <li class="link"><a href="about.html">About</a></li>
-          <li class="link"><a href="contact.html">Contact</a></li>
-          <li class="link"><a href="cart.html">Cart</a></li>
+            <li class="link"><a href="index.html">Home</a></li>
+            <li class="link"><a href="services.html">Services</a></li>
+            <li class="link"><a href="about.html">About</a></li>
+            <li class="link"><a href="contact.html">Contact</a></li>
+            <li class="link"><a href="account.html">Account</a></li>
+            <li class="link"><a href="cart.html">Cart</a></li>
         </ul>
-        <div id="signInDiv">
-          <button id="signIn" class="btn">
-            <a href="login.html">Sign In</a>
-          </button>
-          <button id="createAcc" class="btn">
-            <a href="signup.html">Create Account</a>
-          </button>
-        </div>
-        <div id="loginStatus"></div>
-  
-      </nav>
+
+        <!-- Add logout button -->
+        <button id="logout-button" class="btn" onclick="window.location.href='index.html'">Logout</button>
+    </nav>
 
     <div class="container">
-        <h2>Edit Business Information</h2>
+        <h2>Edit Customer Information For Administration</h2>
         <p>Business Name: <span id="business-name">Your Business Name</span></p>
         <p>Logo: <span id="business-logo">Your Logo URL</span></p>
-        <p>Address: <span id="business-address">Your Address</span></p>
 
-        <h2>Manage Services</h2>
-        <form id="service-form">
-            <input type="text" name="service_id" placeholder="Service ID" required>
-            <input type="text" name="customer_name" placeholder="Customer Name" required>
-            <input type="text" name="service_content" placeholder="Service Content" required>
-            <input type="number" name="service_price" placeholder="Service Price" required>
-            <button type="submit">Add Service</button>
-        </form>
-        <h3>Current Services</h3>
-        <ul id="service-list"></ul>
+        <h2>Manage Orders</h2>
+        <div id="orderListContainer">
+            <table id="orderList">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User ID</th>
+                        <th>Total Price</th>
+                        <th>Order Date</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    <!-- Order data will be rendered here -->
+                </tbody>
+            </table>
+        </div>
+        <h2>Edit Order Total Price</h2>
 
-        <h2>Confirm Service Execution</h2>
-        <form id="confirm-service-form">
-            <input type="text" name="service_id" placeholder="Service ID" required>
-            <button type="submit">Confirm</button>
-        </form>
-
-        <h2>Follow Up with Customers for Unpaid Bills</h2>
-        <ul id="unpaid-bills-list"></ul>
-
-        <h2>Add Unpaid Customers</h2>
-        <form id="unpaid-customer-form">
-            <input type="text" name="customer_id" placeholder="Service ID" required>
-            <input type="number" name="unpaid_amount" placeholder="Amount Paid" required>
-            <button type="submit">Update Customer</button>
+        <form id="order-form">
+            <input type="number" name="order_id" placeholder="Order ID" required><br><br>
+            <input type="number" name="total_price" step="0.01" placeholder="New Total Price" required><br><br>
+            <button type="submit">Update Order</button>
         </form>
 
-        <h3>Unpaid Customers List</h3>
-        <ul id="unpaid-customers-list"></ul>
+        <h2>Delete Order</h2>
 
-        <h2>Service Overview</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Customer Name</th>
-                    <th>Service Content</th>
-                    <th>Paid Amount</th>
-                    <th>Unpaid Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="service-overview-list">
-                <!-- service-overview-list -->
-            </tbody>
-        </table>
-    </div>
+        <form id="delete-order-form">
+            <input type="number" name="order_id" placeholder="Order ID" required>
+            <button type="submit">Delete Order</button>
+        </form>
 
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const isAdmin = localStorage.getItem('isAdmin');
-
-            if (!isAdmin || isAdmin !== 'true') {
-                alert('Access denied. Admins only.');
-                window.location.href = 'login.html';  // Redirect to login page if not admin
-            }
-
-        });
-    </script> -->
+        <h2>Add Order</h2>
     
+    <!-- Form for adding order -->
+        <form id="add-order-form">
+            <input type="number" name="user_id" placeholder="User ID" required>
+            <input type="number" name="total_price" placeholder="Total Price" required>
+            <button type="submit">Add Order</button>
+        </form>
+    
+        <h2>Pending Orders</h2>
+
+    <!-- Form to input Order ID and User ID -->
+    <h3>Mark Order as Pending</h3>
+    <form id="mark-pending-form">
+        <input type="number" name="order_id" placeholder="Order ID" required>
+        <input type="number" name="user_id" placeholder="User ID" required>
+        <button type="submit">Mark as Pending</button>
+    </form>
+
+    <!-- List of pending orders -->
+    <h2>Pending Orders</h2>
+    <table id="pending-orders">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Total Price</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- Orders will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+
+        <!-- Add a new link to navigate to another page (e.g., Update Services Page) -->
+        <h2>Other Actions</h2>
+        <p>For more service management options, visit the <a href="BusinessEdit.html">Update Services Page</a>.</p>
+
+        <script>
+            // Check admin login
+            //document.addEventListener('DOMContentLoaded', function() {
+            //     const isAdmin = localStorage.getItem('isAdmin');
+
+            //     if (!isAdmin || isAdmin !== 'true') {
+            //         alert('Access denied. Admins only.');
+            //         window.location.href = 'login.html';  // Redirect to login page if not admin
+            //     }
+            // });
+
+        </script>
+        <script src="../JS/BusinessAdmin.js"></script>
+    </div>
 </body>
 </html>

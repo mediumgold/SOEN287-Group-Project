@@ -1,46 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order History</title>
-    <link rel="stylesheet" href="../CSS/orderhistory.css">
+    <link rel="stylesheet" href="../CSS/orderhistory.css" />
     <script defer src="../JS/orderhistory.js"></script>
-</head>
-<body>
+    <script src="../JS/shared.js"></script>
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="company-nav-logo">
-            <a href="index.html"><img src="../assets/company logo placeholder for a website.png" alt="Company Logo"/></a>
-            <h2 id="title">Company Name</h2>
-        </div>
+      <div class="company-nav-logo">
+        <a href="index.html"
+          ><img
+            id="logo"
+            src="../assets/company logo placeholder for a website.png"
+            alt="Company Logo"
+        /></a>
+        <h2 id="title">Company Name</h2>
+      </div>
 
-        <ul class="nav-links">
-            <li class="link"><a href="index.html">Home</a></li>
-            <li class="link"><a href="services.html">Services</a></li>
-            <li class="link"><a href="about.html">About</a></li>
-            <li class="link"><a href="contact.html">Contact</a></li>
-            <li class="link"><a href="cart.html">Cart</a></li>
-        </ul>
+      <ul class="nav-links">
+        <li class="link"><a href="index.html">Home</a></li>
+        <li class="link"><a href="services.html">Services</a></li>
+        <li class="link"><a href="about.html">About</a></li>
+        <li class="link"><a href="contact.html">Contact</a></li>
+        <li class="link"><a href="cart.html">Cart</a></li>
+      </ul>
 
-        <div id="signInDiv">
-            <button id="signIn" class="btn"><a href="login.html">Sign In</a></button>
-            <button id="createAcc" class="btn"><a href="signup.html">Create Account</a></button>
-        </div>
+      <div id="signInDiv">
+        <button id="signIn" class="btn">
+          <a href="login.html">Sign In</a>
+        </button>
+        <button id="createAcc" class="btn">
+          <a href="signup.html">Create Account</a>
+        </button>
+      </div>
     </nav>
 
     <section class="order-history-section">
-        <h1>Your Order History</h1>
-        <div id="orders-container">
-            <!-- Orders will be dynamically loaded here -->
-        </div>
+      <h1>Your Order History</h1>
+      <div id="orders-container">
+        <!-- Orders will be dynamically loaded here -->
+      </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 Company Name. All rights reserved.</p>
-        <ul class="footer-links">
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-        </ul>
+      <p>&copy; 2024 Company Name. All rights reserved.</p>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
     </footer>
-</body>
+  </body>
 </html>
