@@ -1,3 +1,8 @@
+Alexander Hsu - 40247307
+Nicholas Taddio 40213969
+Nathan Wong - 40168305
+Yumo Tao - 40025397
+
 Installation Guide:
 
 1. Install Node.js
