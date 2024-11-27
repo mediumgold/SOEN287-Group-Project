@@ -85,10 +85,11 @@ app.post('/submit', (req, res) => {
         }
 
         if (userResults.length > 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'This email is already registered in the user database.',
-            });
+            // return res.status(400).json({
+            //     success: false,
+            //     message: 'This email is already registered in the user database.',
+            // });
+            return res.json({ success: false, message: 'Name or email already exists.' });
         }
 
         // Check in adminLogin table
@@ -99,10 +100,11 @@ app.post('/submit', (req, res) => {
             }
 
             if (adminResults.length > 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'This email is already registered in the admin database.',
-                });
+                // return res.status(400).json({
+                //     success: false,
+                //     message: 'This email is already registered in the admin database.',
+                // });
+                return res.json({ success: false, message: 'Name or email already exists.' });
             }
 
             // If no conflict, insert new user
@@ -591,6 +593,42 @@ app.put('/update-user-account', async (req, res) => {
 
 
 app.put('/update-admin-account', async (req, res) => {
+    try {
+        const { userId, username, password } = req.body;
+
+        if (!userId || !username || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
+        }
+
+        const sql = `
+            UPDATE adminLogin 
+            SET name = ?, password = ? 
+            WHERE id = ?`;
+        const results = await db.query(sql, [username, password, userId]);
+
+        if (results.affectedRows > 0) {
+            res.json({ success: true, message: 'Admin account updated successfully.' });
+        } else {
+            res.status(404).json({ success: false, message: 'Admin not found.' });
+        }
+    } catch (error) {
+        console.error('Error updating admin account:', error);
+        res.status(500).json({ success: false, message: 'Database error occurred.' });
+    }
+});
+
+app.post('/api/delete-user-account', async (req, res) => {
+    const { userId } = req.body;
+
+    const sql = 'DELETE FROM userLogin WHERE user_id = ?';
+    db.query(sql, [userId], (err, result) => {
+        if (err) return res.status(500).send(err.message);
+        res.send(result.affectedRows > 0 ? 'User deleted successfully!' : 'User not found.');
+    });
+});
+
+
+app.put('/delete-admin-account', async (req, res) => {
     try {
         const { userId, username, password } = req.body;
 

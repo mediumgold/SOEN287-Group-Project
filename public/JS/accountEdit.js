@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const accountEditForm = document.getElementById('account-edit-form');
+    const deleteAccount = document.getElementById('delete-account');
 
     if (accountEditForm) {
         accountEditForm.addEventListener('submit', function (event) {
@@ -37,6 +38,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(error => console.error('Error:', error));
         });
     }
+
+    //delete account button
+    deleteAccount.onclick = function () {
+        const userId = localStorage.getItem('userId');
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+        if (!userId) {
+            alert('You are not logged in.');
+            return;
+        }
+
+        //const endpoint = isAdmin ? '/delete-admin-account' : '/delete-user-account';
+        const endpoint = '/delete-user-account';
+
+        fetch(`http://localhost:5500${endpoint}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Account deleted successfully!');
+                    localStorage.removeItem('userId'); // Clear user data from localStorage
+                    localStorage.removeItem('isAdmin');
+                    window.location.href = '/public/HTML/index.html';
+                } else {
+                    alert(data.message || 'Failed to delete account details.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+   
+    
 
     const isLoggedIn = localStorage.getItem('loggedIn');
     const loginStatus = document.getElementById('loginStatus');

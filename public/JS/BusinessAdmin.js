@@ -173,7 +173,7 @@ async function loadPendingOrders() {
                 <td>${order.order_id}</td>
                 <td>${order.user_id}</td>
                 <td>${order.total_price}</td>
-                <td><button class="remove-btn" data-order-id="${order.order_id}">Remove</button></td>
+                <td><button class="remove-btn" data-order-id="${order.order_id}">Mark As Paid</button></td>
             `;
             tbody.appendChild(row);
         });

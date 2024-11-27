@@ -32,15 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     let orderDetails = `
                         <p><strong>Order ID:</strong> ${orderId}</p>
                         <p><strong>Date:</strong> ${new Date(order[0].order_date).toLocaleString()}</p>
+                        <p><strong>Total:</strong></p>
+                        <p></br></p>
                         <div class="order-items">
                     `;
 
                     order.forEach(item => {
                         orderDetails += `
                             <div class="order-item">
-                                <p><strong>Item:</strong> ${item.name}</p>
-                                <p><strong>Quantity:</strong> ${item.quantity}</p>
-                                <p><strong>Price:</strong> $${item.price.toFixed(2)}</p>
+                                <p><strong>        Item:</strong> ${item.name}</p>
+                                <p><strong>        Quantity:</strong> ${item.quantity}</p>
+                                <p><strong>        Price:</strong> $${item.price.toFixed(2)}</p>
+                                <p></br></p>
                             </div>
                         `;
                     });
