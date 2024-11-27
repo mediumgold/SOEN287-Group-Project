@@ -566,17 +566,17 @@ app.get('/api/items', (req, res) => {
 
 app.put('/update-user-account', async (req, res) => {
     try {
-        const { userId, username, email, password } = req.body;
+        const { userId, username, password } = req.body;
 
-        if (!userId || !username || !email || !password) {
+        if (!userId || !username || !password) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
         const sql = `
             UPDATE userLogin 
-            SET name = ?, email = ?, password = ? 
+            SET name = ?, password = ? 
             WHERE user_id = ?`;
-        const results = await db.query(sql, [username, email, password, userId]);
+        const results = await db.query(sql, [username, password, userId]);
 
         if (results.affectedRows > 0) {
             res.json({ success: true, message: 'User account updated successfully.' });
@@ -592,17 +592,17 @@ app.put('/update-user-account', async (req, res) => {
 
 app.put('/update-admin-account', async (req, res) => {
     try {
-        const { userId, username, email, password } = req.body;
+        const { userId, username, password } = req.body;
 
-        if (!userId || !username || !email || !password) {
+        if (!userId || !username || !password) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
         const sql = `
             UPDATE adminLogin 
-            SET name = ?, email = ?, password = ? 
+            SET name = ?, password = ? 
             WHERE id = ?`;
-        const results = await db.query(sql, [username, email, password, userId]);
+        const results = await db.query(sql, [username, password, userId]);
 
         if (results.affectedRows > 0) {
             res.json({ success: true, message: 'Admin account updated successfully.' });
