@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const data = await cartResponse.json();
                     if (cartResponse.ok && data.message === 'Item added to cart') {
-                        alert(`Service ${serviceId} added to your cart!`);
+                        alert(`Service added to your cart!`);
                     } else {
                         alert('Failed to add to cart. Please try again.');
                     }

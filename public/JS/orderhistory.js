@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     let orderDetails = `
                         <p><strong>Order ID:</strong> ${orderId}</p>
                         <p><strong>Date:</strong> ${new Date(order[0].order_date).toLocaleString()}</p>
-                        <p><strong>Total:</strong></p>
+                        <p><strong>Total:</strong> ${orders.t}</p>
                         <p></br></p>
                         <div class="order-items">
                     `;

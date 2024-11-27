@@ -297,12 +297,18 @@ app.post('/checkout', async (req, res) => {
     }
 });
 
-// View user's order history
+//view orders history
 app.get('/orders/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const sql = `
-            SELECT Orders.*, Order_Items.*, Items.name, Order_Items.quantity, Order_Items.price
+            SELECT 
+                Orders.order_id, 
+                Orders.order_date, 
+                Orders.total_price, 
+                Items.name, 
+                Order_Items.quantity, 
+                Order_Items.price
             FROM Orders
             JOIN Order_Items ON Orders.order_id = Order_Items.order_id
             JOIN Items ON Order_Items.item_id = Items.item_id
@@ -315,7 +321,7 @@ app.get('/orders/:userId', async (req, res) => {
         console.error('Error retrieving order history:', error);
         res.status(500).json({ message: 'Database error' });
     }
-});
+})
 
 // Handle form submission from the contact page
 app.post("/submitContact", async (req, res) => {
