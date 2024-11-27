@@ -469,11 +469,11 @@ app.post('/api/markAsPending', (req, res) => {
         return res.status(400).json({ message: 'Order ID and User ID are required.' });
     }
 
-    console.log('Received order_id:', order_id, 'Received user_id:', user_id);  // 打印传入的值
+    console.log('Received order_id:', order_id, 'Received user_id:', user_id);  
 
     const query = 'UPDATE Orders SET payment_status = 0 WHERE order_id = ? AND user_id = ?';
     
-    console.log('Executing query:', query, 'with params:', [order_id, user_id]);  // 打印 SQL 查询和参数
+    console.log('Executing query:', query, 'with params:', [order_id, user_id]);  
 
     db.query(query, [order_id, user_id], (err, result) => {
         if (err) {
@@ -623,6 +623,45 @@ app.put('/update-admin-account', async (req, res) => {
     }
 });
 
+// app.delete('/delete-user-account', async (req, res) => {
+//     try {
+//         const { userId } = req.body;
+
+//         if (!userId) {
+//             return res.status(400).json({ success: false, message: 'User ID is required.' });
+//         }
+
+//         // Delete all related orders
+//         const deleteOrdersSQL = `DELETE FROM Orders WHERE user_id = ?`;
+//         const deleteCartSQL = `DELETE FROM Cart WHERE user_id = ?`;
+//         const cascade = `
+//         ALTER TABLE orders
+//         DROP FOREIGN KEY orders_ibfk_1;
+
+//         ALTER TABLE orders
+//         ADD CONSTRAINT orders_ibfk_1
+//         FOREIGN KEY (user_id) REFERENCES userlogin(user_id) ON DELETE CASCADE;
+//         `
+
+//         await db.query(deleteOrdersSQL, [userId]); // Remove all orders
+//         //await db.query(deleteCartSQL, [userId]);   // Remove all cart items
+//         //await db.query(cascade, [userId]);
+
+//         // Delete the user account
+//         const deleteUserSQL = `DELETE FROM Users WHERE user_id = ?`;
+//         const result = await db.query(deleteUserSQL, [userId]);
+
+//         if (result.affectedRows > 0) {
+//             res.status(200).json({ success: true, message: 'Account and related data deleted successfully.' });
+//         } else {
+//             res.status(404).json({ success: false, message: 'User not found.' });
+//         }
+//     } catch (error) {
+//         console.error('Error deleting user account:', error);
+//         res.status(500).json({ success: false, message: 'Database error occurred.' });
+//     }
+// });
+
 app.delete('/delete-user-account', async (req, res) => {
     try {
         const { userId } = req.body;
@@ -630,29 +669,32 @@ app.delete('/delete-user-account', async (req, res) => {
         if (!userId) {
             return res.status(400).json({ success: false, message: 'User ID is required.' });
         }
-
-        // Delete all related orders
-        const deleteOrdersSQL = `DELETE FROM Orders WHERE user_id = ?`;
-        const deleteCartSQL = `DELETE FROM Cart WHERE user_id = ?`;
-        const cascade = `
-        ALTER TABLE orders
-        DROP FOREIGN KEY orders_ibfk_1;
-
-        ALTER TABLE orders
-        ADD CONSTRAINT orders_ibfk_1
-        FOREIGN KEY (user_id) REFERENCES userlogin(user_id) ON DELETE CASCADE;
-        `
-
-        await db.query(deleteOrdersSQL, [userId]); // Remove all orders
-        //await db.query(deleteCartSQL, [userId]);   // Remove all cart items
-        //await db.query(cascade, [userId]);
-
-        // Delete the user account
-        const deleteUserSQL = `DELETE FROM Users WHERE user_id = ?`;
+        app.delete('/delete-user-account', async (req, res) => {
+            try {
+                const { userId } = req.body;
+        
+                if (!userId) {
+                    return res.status(400).json({ success: false, message: 'User ID is required.' });
+                }
+                const deleteUserSQL = `DELETE FROM userLogin WHERE user_id = ?`;
+                const result = await db.query(deleteUserSQL, [userId]);
+        
+                if (result.affectedRows > 0) {
+                    res.status(200).json({ success: true, message: 'User account deleted successfully.' });
+                } else {
+                    res.status(404).json({ success: false, message: 'User not found.' });
+                }
+            } catch (error) {
+                console.error('Error deleting user account:', error);
+                res.status(500).json({ success: false, message: 'Database error occurred.' });
+            }
+        });
+        
+        const deleteUserSQL = `DELETE FROM userLogin WHERE user_id = ?`;
         const result = await db.query(deleteUserSQL, [userId]);
 
         if (result.affectedRows > 0) {
-            res.status(200).json({ success: true, message: 'Account and related data deleted successfully.' });
+            res.status(200).json({ success: true, message: 'User account deleted successfully.' });
         } else {
             res.status(404).json({ success: false, message: 'User not found.' });
         }
@@ -661,8 +703,6 @@ app.delete('/delete-user-account', async (req, res) => {
         res.status(500).json({ success: false, message: 'Database error occurred.' });
     }
 });
-
-
 
 
 
