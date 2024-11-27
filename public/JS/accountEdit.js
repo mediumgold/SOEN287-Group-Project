@@ -46,46 +46,82 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("container2").style.display = 'none';
     }
 
-    deleteAccount.onclick = function () {
-        const userId = localStorage.getItem('userId');
+    // deleteAccount.onclick = function () {
+    //     const userId = localStorage.getItem('userId');
         
 
-        if (!userId) {
-            alert('You are not logged in.');
-            return;
-        }
+    //     if (!userId) {
+    //         alert('You are not logged in.');
+    //         return;
+    //     }
 
-        //const endpoint = isAdmin ? '/delete-admin-account' : '/delete-user-account';
-        const endpoint = '/delete-user-account';
+    //     //const endpoint = isAdmin ? '/delete-admin-account' : '/delete-user-account';
+    //     const endpoint = '/delete-user-account';
 
-        fetch(`http://localhost:5500${endpoint}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId})
-        })
-        .catch(error => console.error('Error:', error));
+    //     fetch(`http://localhost:5500${endpoint}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ userId})
+    //     })
+    //     .catch(error => console.error('Error:', error));
         
-        alert('Account deleted successfully!');
-        localStorage.removeItem('userId'); // Clear user data from localStorage
-        localStorage.removeItem('isAdmin');
-        localStorage.removeItem('loggedIn');
-        window.location.href = '/public/HTML/index.html';
-            // .then(data => {
-            //     if (data.success) {
-            //         alert('Account deleted successfully!');
-            //         localStorage.removeItem('userId'); // Clear user data from localStorage
-            //         localStorage.removeItem('isAdmin');
-            //         window.location.href = '/public/HTML/index.html';
-            //     } else {
-            //         alert(data.message || 'Failed to delete account details.');
-            //     }
-            // })
+    //     //deleteOrder(localStorage.getItem('userId'));
 
+
+    //     alert('Account deleted successfully!');
+    //     localStorage.removeItem('userId'); // Clear user data from localStorage
+    //     localStorage.removeItem('isAdmin');
+    //     localStorage.removeItem('loggedIn');
+
+    //     window.location.href = '/public/HTML/index.html';
+            
        
+    // }
+    
+
+
+//const deleteAccount = document.getElementById('delete-account');
+deleteAccount.onclick = function () {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+        alert('You are not logged in.');
+        return;
     }
-   
+
+    // Ask for confirmation before deleting account
+    const confirmDelete = confirm('Are you sure you want to delete your account and all related data?');
+    if (!confirmDelete) {
+        return;
+    }
+
+    // Send a DELETE request to delete the user account and related data
+    fetch('http://localhost:5500/delete-user-account', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Your account and related data have been deleted successfully.');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('loggedIn');
+            window.location.href = '/public/HTML/index.html'; // Redirect to home page
+        } else {
+            alert(data.message || 'An error occurred while deleting your account.');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting account:', error);
+        alert('An error occurred while deleting your account. Please try again later.');
+    });
+};
     
 
     const isLoggedIn = localStorage.getItem('loggedIn');
@@ -128,3 +164,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
 });
+
+
+// async function deleteOrder(userId){
+//     const data = userId;
+
+//     try {
+//         // Send POST request to delete the order
+//         const response = await fetch('http://localhost:5500/api/deleteOrder', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(data)
+//         });
+
+//         const result = await response.json();
+//         if (response.ok) {
+//             alert('Order deleted successfully!');
+//         } else {
+//             alert(result.message || 'Failed to delete order.');
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//         alert('An error occurred while deleting the order.');
+//     }
+//     location.reload();
+// }

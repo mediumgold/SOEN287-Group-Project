@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS websiteDB;
-USE websiteDB; -- <- database being used
+USE websiteDB;
 
 -- Create userLogin table
 CREATE TABLE IF NOT EXISTS userLogin (
@@ -29,41 +29,42 @@ CREATE TABLE IF NOT EXISTS Items (
     name VARCHAR(255),
     price DECIMAL(10, 2),
     description TEXT,
-    UNIQUE(name) -- Ensure that item names are unique
+    UNIQUE(name)
 );
 
--- Create Cart table
+-- Create Cart table with ON DELETE CASCADE for user_id and item_id
 CREATE TABLE IF NOT EXISTS Cart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     item_id INT,
     quantity INT,
-    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES userLogin(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES Items(item_id) ON DELETE CASCADE
 );
 
--- Create Orders table
+-- Create Orders table with ON DELETE CASCADE for user_id
 CREATE TABLE IF NOT EXISTS Orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     total_price DECIMAL(10, 2) NOT NULL,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES userLogin(user_id)
+    payment_status INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES userLogin(user_id) ON DELETE CASCADE
 );
-ALTER TABLE Orders
-ADD COLUMN IF NOT EXISTS payment_status INT DEFAULT 0;
 
--- Create Order_Items table to store the items in each order
+-- Create Order_Items table with ON DELETE CASCADE for order_id and item_id
 CREATE TABLE IF NOT EXISTS Order_Items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
     item_id INT,
     quantity INT,
     price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-    FOREIGN KEY (item_id) REFERENCES Items(item_id)
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES Items(item_id) ON DELETE CASCADE
 );
 
--- Create contactMessages table
+-- Create contactMessages table (No cascade required here)
 CREATE TABLE IF NOT EXISTS contactMessages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -72,6 +73,7 @@ CREATE TABLE IF NOT EXISTS contactMessages (
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create AdminServices table with ON DELETE CASCADE for user_id and order_id
 CREATE TABLE IF NOT EXISTS AdminServices (
     New_order_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
@@ -80,10 +82,12 @@ CREATE TABLE IF NOT EXISTS AdminServices (
     service_content TEXT,
     total_price DECIMAL(10, 2) NOT NULL,
     paid DECIMAL(10, 2) DEFAULT 0,
-    unpaid DECIMAL(10, 2)
+    unpaid DECIMAL(10, 2),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES userLogin(user_id) ON DELETE CASCADE
 );
 
-
+-- Create services table
 CREATE TABLE IF NOT EXISTS services (
     service_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -92,7 +96,3 @@ CREATE TABLE IF NOT EXISTS services (
     price DECIMAL(10, 2) NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
-
-
-

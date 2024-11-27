@@ -42,12 +42,12 @@
     
     <div class="container">
 
-      <h2>Manage Items</h2>
+      <h2>Manage Services</h2>
 <div id="itemListContainer">
     <table id="itemList">
         <thead>
             <tr>
-                <th>Item ID</th>
+                <th>Service ID</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
@@ -59,7 +59,7 @@
     </table>
 </div>
     
-      <h2>Edit Existing Items</h2>
+      <h2>Edit Existing Services</h2>
       <form id="edit-form">
         <input type="number" name="item_id" placeholder="Item ID" required />
         <input type="number" step="0.01" name="price" placeholder="New Price" />
@@ -67,7 +67,7 @@
         <button type="submit">Edit Item</button>
       </form>
   
-      <h2>Add New Item</h2>
+      <h2>Add New Service</h2>
       <form id="add-form">
         <input type="text" name="name" placeholder="Item Name" required />
         <input
@@ -85,7 +85,7 @@
         <button type="submit">Add Item</button>
       </form>
   
-      <h2>Delete Item</h2>
+      <h2>Delete Service</h2>
       <form id="delete-form">
         <input type="number" name="item_id" placeholder="Item ID" required />
         <button type="submit">Delete Item</button>
@@ -102,7 +102,7 @@
         <p>Logo: <span id="business-logo"></span></p>
         <form action="" method="POST">
           <label for="logoInput">Edit the logo:</label>
-          <input type="file" id="logoInput" accept="image/*" />
+          <input type="file" id="logoInput" accept="image/*, image/webp" />
         </form>
         <p>Address: <span id="business-address">Your Address</span>
           <form action="" method="POST">

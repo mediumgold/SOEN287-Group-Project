@@ -624,14 +624,72 @@ app.put('/update-admin-account', async (req, res) => {
 });
 
 app.delete('/delete-user-account', async (req, res) => {
-    const { userId } = req.body;
+    try {
+        const { userId } = req.body;
 
-    const sql = 'DELETE FROM userLogin WHERE user_id = ?';
-    db.query(sql, [userId], (err, result) => {
-        if (err) return res.status(500).send(err.message);
-        res.send(result.affectedRows > 0 ? 'User deleted successfully!' : 'User not found.');
-    });
+        if (!userId) {
+            return res.status(400).json({ success: false, message: 'User ID is required.' });
+        }
+
+        // Delete all related orders
+        const deleteOrdersSQL = `DELETE FROM Orders WHERE user_id = ?`;
+        const deleteCartSQL = `DELETE FROM Cart WHERE user_id = ?`;
+        const cascade = `
+        ALTER TABLE orders
+        DROP FOREIGN KEY orders_ibfk_1;
+
+        ALTER TABLE orders
+        ADD CONSTRAINT orders_ibfk_1
+        FOREIGN KEY (user_id) REFERENCES userlogin(user_id) ON DELETE CASCADE;
+        `
+
+        await db.query(deleteOrdersSQL, [userId]); // Remove all orders
+        //await db.query(deleteCartSQL, [userId]);   // Remove all cart items
+        //await db.query(cascade, [userId]);
+
+        // Delete the user account
+        const deleteUserSQL = `DELETE FROM Users WHERE user_id = ?`;
+        const result = await db.query(deleteUserSQL, [userId]);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ success: true, message: 'Account and related data deleted successfully.' });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found.' });
+        }
+    } catch (error) {
+        console.error('Error deleting user account:', error);
+        res.status(500).json({ success: false, message: 'Database error occurred.' });
+    }
 });
+
+
+
+
+
+// Delete an order by ID
+app.delete('/orders/:orderId', async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // SQL query to delete the order and related items
+        const deleteOrderSQL = `DELETE FROM Orders WHERE order_id = ?`;
+        const deleteOrderItemsSQL = `DELETE FROM Order_Items WHERE order_id = ?`;
+
+        // Delete items first (maintaining foreign key relationships, if any)
+        await db.query(deleteOrderItemsSQL, [orderId]);
+        const result = await db.query(deleteOrderSQL, [orderId]);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ success: true, message: 'Order canceled successfully!' });
+        } else {
+            res.status(404).json({ success: false, message: 'Order not found.' });
+        }
+    } catch (error) {
+        console.error('Error canceling order:', error);
+        res.status(500).json({ success: false, message: 'Database error occurred.' });
+    }
+});
+
 
 
 // app.delete('/delete-admin-account', async (req, res) => {
