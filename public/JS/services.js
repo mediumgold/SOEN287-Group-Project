@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <h2>${service.name}</h2>
                 <p>${service.description}</p>
                 <p>Price: $${service.price.toFixed(2)}</p>
+                <button class="btn">Learn More</button>
                 <button class="btn add-to-cart" data-service-id="${service.item_id}">
                     Add to Cart
                 </button>
