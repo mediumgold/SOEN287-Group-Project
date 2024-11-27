@@ -32,12 +32,6 @@ CREATE TABLE IF NOT EXISTS Items (
     UNIQUE(name) -- Ensure that item names are unique
 );
 
--- Insert Services if not already in the table
-INSERT IGNORE INTO Items (name, price, description) VALUES
-('Service 1', 50.00, 'Description for Service 1'),
-('Service 2', 75.00, 'Description for Service 2'),
-('Service 3', 100.00, 'Description for Service 3');
-
 -- Create Cart table
 CREATE TABLE IF NOT EXISTS Cart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,

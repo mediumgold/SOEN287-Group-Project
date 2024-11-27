@@ -40,9 +40,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //delete account button
+
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    if(isAdmin){
+        document.getElementById("container2").style.display = 'none';
+    }
+
     deleteAccount.onclick = function () {
         const userId = localStorage.getItem('userId');
-        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        
 
         if (!userId) {
             alert('You are not logged in.');
@@ -59,18 +65,25 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ userId})
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Account deleted successfully!');
-                    localStorage.removeItem('userId'); // Clear user data from localStorage
-                    localStorage.removeItem('isAdmin');
-                    window.location.href = '/public/HTML/index.html';
-                } else {
-                    alert(data.message || 'Failed to delete account details.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error));
+        
+        alert('Account deleted successfully!');
+        localStorage.removeItem('userId'); // Clear user data from localStorage
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('loggedIn');
+        window.location.href = '/public/HTML/index.html';
+            // .then(data => {
+            //     if (data.success) {
+            //         alert('Account deleted successfully!');
+            //         localStorage.removeItem('userId'); // Clear user data from localStorage
+            //         localStorage.removeItem('isAdmin');
+            //         window.location.href = '/public/HTML/index.html';
+            //     } else {
+            //         alert(data.message || 'Failed to delete account details.');
+            //     }
+            // })
+
+       
     }
    
     

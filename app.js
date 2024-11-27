@@ -617,7 +617,7 @@ app.put('/update-admin-account', async (req, res) => {
     }
 });
 
-app.post('/api/delete-user-account', async (req, res) => {
+app.delete('/delete-user-account', async (req, res) => {
     const { userId } = req.body;
 
     const sql = 'DELETE FROM userLogin WHERE user_id = ?';
@@ -628,30 +628,24 @@ app.post('/api/delete-user-account', async (req, res) => {
 });
 
 
-app.put('/delete-admin-account', async (req, res) => {
-    try {
-        const { userId, username, password } = req.body;
+// app.delete('/delete-admin-account', async (req, res) => {
+//     const { userId } = req.body;
 
-        if (!userId || !username || !password) {
-            return res.status(400).json({ success: false, message: 'All fields are required.' });
-        }
+//     const sql = 'DELETE FROM adminLogin WHERE id = ?';
+//     db.query(sql, [userId], (err, result) => {
+//         if (err) return res.status(500).send(err.message);
+//         res.send(result.affectedRows > 0 ? 'Admin deleted successfully!' : 'Admin not found.');
+//     });
+// });
 
-        const sql = `
-            UPDATE adminLogin 
-            SET name = ?, password = ? 
-            WHERE id = ?`;
-        const results = await db.query(sql, [username, password, userId]);
 
-        if (results.affectedRows > 0) {
-            res.json({ success: true, message: 'Admin account updated successfully.' });
-        } else {
-            res.status(404).json({ success: false, message: 'Admin not found.' });
-        }
-    } catch (error) {
-        console.error('Error updating admin account:', error);
-        res.status(500).json({ success: false, message: 'Database error occurred.' });
-    }
-});
+
+
+
+
+
+
+
 
 // app.get('/latest-value', (req, res) => {
 //     const query = 'SELECT name FROM userLogin WHERE id = ?'; // Adjust query to fit your table structure
