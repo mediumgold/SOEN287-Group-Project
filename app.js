@@ -662,13 +662,7 @@ app.put('/update-admin-account', async (req, res) => {
 //     }
 // });
 
-app.delete('/delete-user-account', async (req, res) => {
-    try {
-        const { userId } = req.body;
 
-        if (!userId) {
-            return res.status(400).json({ success: false, message: 'User ID is required.' });
-        }
         app.delete('/delete-user-account', async (req, res) => {
             try {
                 const { userId } = req.body;
@@ -689,20 +683,6 @@ app.delete('/delete-user-account', async (req, res) => {
                 res.status(500).json({ success: false, message: 'Database error occurred.' });
             }
         });
-        
-        const deleteUserSQL = `DELETE FROM userLogin WHERE user_id = ?`;
-        const result = await db.query(deleteUserSQL, [userId]);
-
-        if (result.affectedRows > 0) {
-            res.status(200).json({ success: true, message: 'User account deleted successfully.' });
-        } else {
-            res.status(404).json({ success: false, message: 'User not found.' });
-        }
-    } catch (error) {
-        console.error('Error deleting user account:', error);
-        res.status(500).json({ success: false, message: 'Database error occurred.' });
-    }
-});
 
 
 
