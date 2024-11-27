@@ -55,17 +55,10 @@ User Guide on Website:
   3. Logout -> logs user out, Sign In, and Create Account will display again
 
 3. An example of how a user can use the website
-  The user creates an account using "Create Account", they input their name, email, and password. They sign in with their valid credentials.
-  If they wish to delete their account or change their name and password they can do so from the Account page. They can browse the services 
-  catalog and add the preferred services to their cart. If they wish to request a service, they can write a form on the Contact page using 
-  their name, email, and message request. Once the user is satisfied with their cart they can proceed to checkout from the Cart page. From 
-  here, the user can see their order history by accessing Account, where they see all of the information related to their cart. To proceed 
-  with their purchase they will need confirmation from an admin user. Once confirmed, the user will be able to pay for the services by filling
-  out their credentials.
+  The user creates an account using "Create Account", they input their name, email, and password. They sign in with their valid credentials. If they wish to delete their account or change their name and password they can do so from the Account page. They can browse the services catalog and add the preferred services to their cart. If they wish to request a service, they can write a form on the Contact page using their name, email, and message request. Once the user is satisfied with their cart they can proceed to checkout from the Cart page. From here, the user can see their order history by accessing Account, where they see all of the information related to their cart. To proceed with their purchase they will need confirmation from an admin user. Once confirmed, the user will be able to pay for the services by filling out their credentials.
 
 4. An example of how an admin can use the website
-  Once an admin user logs in, they have access to "Admin Permissions" on the Account page. Accessing this page will allow the admin user to
-  manage orders such as: 
+  Once an admin user logs in, they have access to "Admin Permissions" on the Account page. Accessing this page will allow the admin user to manage orders such as: 
     -editing the total price for a specific order (required inputs are the order id and the new total price)
     -deleting an order (required input is order id)
     -adding an order (required inputs are user id and total price)
