@@ -235,3 +235,20 @@ a:hover {
     }
 }
 
+/* Table Styling */
+#itemList {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#itemList, th, td {
+    border: 1px solid var(--dark-blue);
+}
+
+th, td {
+    padding: 0.5rem;
+    text-align: left;
+}
+
+

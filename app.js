@@ -128,13 +128,14 @@ app.post('/submit', (req, res) => {
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const sql = 'SELECT user_id FROM userLogin WHERE email = ? AND password = ?';
+        const sql = 'SELECT user_id, name FROM userLogin WHERE email = ? AND password = ?';  // Include the name in the query
         const results = await db.query(sql, [email, password]);
 
         if (results.length > 0) {
             res.json({
                 success: true,
                 userId: results[0].user_id,
+                userName: results[0].name,
                 redirectTo: 'index.html',
             });
         } else {
@@ -159,7 +160,7 @@ app.post('/admin-login', async (req, res) => {
         }
 
         // SQL query to check admin login with plain password
-        const sql = 'SELECT id, password FROM adminLogin WHERE email = ?';
+        const sql = 'SELECT id, name, password FROM adminLogin WHERE email = ?';  // Include the name in the query
         
         // Querying the database
         db.query(sql, [email], (err, results) => {
@@ -180,6 +181,7 @@ app.post('/admin-login', async (req, res) => {
                     return res.json({
                         success: true,
                         userId: results[0].id,
+                        userName: results[0].name,
                         redirectTo: 'BusinessAdmin.html'
                     });
                 }
@@ -612,6 +614,21 @@ app.put('/update-admin-account', async (req, res) => {
         res.status(500).json({ success: false, message: 'Database error occurred.' });
     }
 });
+
+// app.get('/latest-value', (req, res) => {
+//     const query = 'SELECT name FROM userLogin WHERE id = ?'; // Adjust query to fit your table structure
+//     console.log('0000000000000');
+//     db.query(query, [req.query.id], (err, results) => {
+//         console.log('1111111111111111');
+//         if (err) return res.status(500).send(err);
+//         // Make sure to return the correct 'name' field from the query result
+//         const userName = results[0].name;
+//         console.log("22222222222222222");
+//         res.json({ value: userName});
+//         console.log("33333333333333333");
+//     });
+// });
+
 
 
 

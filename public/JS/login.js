@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     localStorage.setItem('loggedIn', true);
                     localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('userName', data.userName); 
                     localStorage.setItem('isAdmin', data.isAdmin || false); // Store if the user is an admin
                     window.location.href = data.redirectTo;
                 } else {
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     localStorage.setItem('loggedIn', true);
                     localStorage.setItem('userId', data.userId);  
+                    localStorage.setItem('userName', data.userName); 
                     localStorage.setItem('isAdmin', true);  
                     window.location.href = data.redirectTo;  
                 } else {

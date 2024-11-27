@@ -15,7 +15,6 @@
           ><img
             id="logo"
             src="../assets/company logo placeholder for a website.png"
-            alt="Company Logo"
         /></a>
         <h2 id="title">Company Name</h2>
       </div>
@@ -25,21 +24,41 @@
         <li class="link"><a href="services.html">Services</a></li>
         <li class="link"><a href="about.html">About</a></li>
         <li class="link"><a href="contact.html">Contact</a></li>
-        <li class="link"><a href="account.html">Account</a></li>
         <li class="link"><a href="cart.html">Cart</a></li>
       </ul>
-
-      <!-- Add logout button -->
-      <button
-        id="logout-button"
-        class="btn"
-        onclick="window.location.href='index.html'"
-      >
-        Logout
-      </button>
+      <div id="signInDiv">
+        <button id="signIn" class="btn">
+          <a href="login.html">Sign In</a>
+        </button>
+        <button id="createAcc" class="btn">
+          <a href="signup.html">Create Account</a>
+        </button>
+      </div>
+      <div id="loginStatus"></div>
     </nav>
+    
     <!-- Logout Button -->
+
+    
     <div class="container">
+
+      <h2>Manage Items</h2>
+<div id="itemListContainer">
+    <table id="itemList">
+        <thead>
+            <tr>
+                <th>Item ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody id="itemTableBody">
+            <!-- Item data will be rendered here -->
+        </tbody>
+    </table>
+</div>
+    
       <h2>Edit Existing Items</h2>
       <form id="edit-form">
         <input type="number" name="item_id" placeholder="Item ID" required />
